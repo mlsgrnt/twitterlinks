@@ -1,5 +1,6 @@
 var css = require('sheetify')
 var choo = require('choo')
+var persist = require('choo-persist')
 
 css('tachyons')
 
@@ -10,9 +11,11 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(require('choo-service-worker')())
 }
 
-app.use(require('./stores/clicks'))
+app.use(persist())
+app.use(require('./stores/oauth'))
 
 app.route('/', require('./views/main'))
+app.route('/callback', require('./views/callback'))
 app.route('/*', require('./views/404'))
 
 module.exports = app.mount('body')
