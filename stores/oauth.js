@@ -3,6 +3,7 @@ module.exports = store
 const fetch = window.fetch ? window.fetch : console.log // bad hack, but hey
 
 function store (state, emitter) {
+  state.oauth = {}
   state.linksGrabbed = false
   state.links = []
 

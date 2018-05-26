@@ -12,35 +12,36 @@ function view (state, emit) {
   }
 
   return html`
-    <body class="sans-serif lh-copy">
-      <main class="pa3 cf center">
-        <section class="fl mw6 w-50-m w-third-l pa3">
-          <h2>${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'login!'}</h2>
-
+    <body class="bg-blue">
+    <div class="pa2">
+        <nav class="flex">
+          <h2 class="w-90 dib ph3 lightest-blue">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'login!'}</h2>
+          <a href="/" class="w-10 link lightest-blue hover-white logout-link center" onclick=${handleClick}>
+            ${state.oauth.user ? 'log out of' : 'log in to'} twitter
+          </a>
+        </nav>
+        <section class="ph6 pv2">
           <ul>
           ${state.links.map(link => html`
-          <li>
-            <div>
-              ${link.image ? html`<img src="${link.image}" style="float:right"></img>` : ''}
-              <h1><a href="${link.url}">${link.title}</a></h1>
-              <h2>${link.author} - ${link.source ? link.source : link.domain}</h2>
-              <p>${link.description}</p>
-              <h5>${link.duration} minute read</h5>
-              <h5><a href="${link.tweetUrl}">Shared by ${link.sharedBy.name}</a></h5>
-
-            </div>
+          <li class="shadow-4 br2 flex ph3 pv1 ma3 bg-near-white">
+              <div class="w-75">
+                <h1 class="f1 b"><a href="${link.url}">${link.title}</a></h1>
+                <h2 class="f3">${link.author ? `${link.author} - ` : ''}${link.source ? link.source : link.domain}</h2>
+                <div class="f4 lh-copy gray">
+                  <p>${link.description}</p>
+                  <h5>${link.duration} minute read</h5>
+                  <h5><a href="${link.tweetUrl}">Shared by ${link.sharedBy.name}</a></h5>
+                </div>
+              </div>
+              <div class="w-25">
+                ${link.image ? html`<img class="" src="${link.image}"></img>` : ''}
+              </div>
           </li>
           `)}
           </ul>
 
-          <button class="dim ph3 ba bw1 pv2 b--black pointer bg-white"
-            onclick=${handleClick}>
-            ${state.oauth.user ? 'log out of' : 'log in to'} twitter
-          </button>
-
-          <br><br>
         </section>
-      </main>
+        </div>
     </body>
   `
 

@@ -3,6 +3,7 @@ var choo = require('choo')
 var persist = require('choo-persist')
 
 css('tachyons')
+css('./custom.css')
 
 var app = choo()
 if (process.env.NODE_ENV !== 'production') {

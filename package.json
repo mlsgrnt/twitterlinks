@@ -14,7 +14,8 @@
     "choo": "^6.11.0",
     "choo-persist": "^3.0.2",
     "choo-service-worker": "^2.4.0",
-    "sheetify": "^7.3.2"
+    "sheetify": "^7.3.2",
+    "tachyons": "^4.9.1"
   },
   "devDependencies": {
     "bankai": "^9.12.1",
