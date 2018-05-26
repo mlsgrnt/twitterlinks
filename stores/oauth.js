@@ -3,6 +3,8 @@ module.exports = store
 const fetch = window.fetch ? window.fetch : console.log // bad hack, but hey
 
 function store (state, emitter) {
+  state.links = []
+
   emitter.on('oauth:requestToken', () => {
     if (!state.oauth) {
       state.oauth = {}
@@ -46,6 +48,7 @@ function store (state, emitter) {
   })
   emitter.on('oauth:deleteToken', () => {
     state.oauth = {}
+    state.links = []
     emitter.emit(state.events.RENDER)
   })
   emitter.on('oauth:getTweets', () => {
@@ -60,13 +63,14 @@ function store (state, emitter) {
       .then((response) => {
         response.json()
           .then((json) => {
-            state.tweets = json.data
-            state.currentTweet = state.tweets[0]
-            emitter.emit(state.events.RENDER)
-            // cache all user images
-            state.tweets.forEach((tweet) => {
-              fetch(tweet.user.profile_image_url_https)
+            const links = json.data.map(tweet => {
+              const urls = tweet.entities.urls
+              if (urls.length > 0) {
+                return urls[0].expanded_url
+              }
             })
+            state.links = links
+            emitter.emit(state.events.RENDER)
           })
       })
   })
