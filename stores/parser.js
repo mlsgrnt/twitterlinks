@@ -1,19 +1,24 @@
-const urlMetadata = require('url-metadata')
-
 module.exports = store
 
 function store (state, emitter) {
-  state.parsedLinks = []
-
   emitter.on('DOMContentLoaded', function () {
-    emitter.on('parser:parse', function (url) {
-      console.log(url)
-      urlMetadata(url).then((article) => {
-        console.log(article)
-        state.parsedLinks.push(article)
-      }).catch((err) => {
-        console.log(err)
-      })
+    emitter.on('parser:parse', function (passed) {
+      const url = passed.url
+      fetch(`https://article-parser.now.sh/${url}`)
+        .then(res => {
+          res.json()
+            .then(json => {
+              json.sharedBy = passed.sharedBy
+              state.links.push(json)
+              emitter.emit(state.events.RENDER)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        })
+        .catch(err => {
+          console.log(err)
+        })
     })
   })
 }

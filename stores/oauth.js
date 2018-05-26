@@ -70,7 +70,7 @@ function store (state, emitter) {
             json.data.forEach(tweet => {
               const urls = tweet.entities.urls
               if (urls.length > 0) {
-                emitter.emit('parser:parse', urls[0].expanded_link)
+                emitter.emit('parser:parse', {sharedBy: tweet.user, url: urls[0].expanded_url })
               }
             })
             emitter.emit(state.events.RENDER)

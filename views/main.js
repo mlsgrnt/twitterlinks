@@ -17,9 +17,21 @@ function view (state, emit) {
         <section class="fl mw6 w-50-m w-third-l pa3">
           <h2>${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'login!'}</h2>
 
-          <p>
-          ${state.links.map(link => link)}
-          </p>
+          <ul>
+          ${state.links.map(link => html`
+          <li>
+            <div>
+              ${link.image ? html`<img src="${link.image}" style="float:right"></img>` : ''}
+              <h1><a href="${link.url}">${link.title}</a></h1>
+              <h2>${link.author} - ${link.source ? link.source : link.domain}</h2>
+              <p>${link.description}</p>
+              <h5>${link.duration} minute read</h5>
+              <h5>Shared by ${link.sharedBy.name}</h5>
+
+            </div>
+          </li>
+          `)}
+          </ul>
 
           <button class="dim ph3 ba bw1 pv2 b--black pointer bg-white"
             onclick=${handleClick}>
