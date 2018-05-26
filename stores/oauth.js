@@ -3,6 +3,7 @@ module.exports = store
 const fetch = window.fetch ? window.fetch : console.log // bad hack, but hey
 
 function store (state, emitter) {
+  state.linksGrabbed = false
   state.links = []
 
   emitter.on('oauth:requestToken', () => {
@@ -47,9 +48,11 @@ function store (state, emitter) {
       })
   })
   emitter.on('oauth:deleteToken', () => {
-    state.oauth = {}
     state.links = []
-    emitter.emit(state.events.RENDER)
+    state.linksGrabbed = false
+    state.oauth = {}
+
+    emitter.emit('render')
   })
   emitter.on('oauth:getTweets', () => {
     fetch('https://smooth-octagon.glitch.me/?type=tweets', {
@@ -63,13 +66,13 @@ function store (state, emitter) {
       .then((response) => {
         response.json()
           .then((json) => {
-            const links = json.data.map(tweet => {
+            state.linksGrabbed = true
+            json.data.forEach(tweet => {
               const urls = tweet.entities.urls
               if (urls.length > 0) {
-                return urls[0].expanded_url
+                emitter.emit('parser:parse', urls[0].expanded_link)
               }
             })
-            state.links = links
             emitter.emit(state.events.RENDER)
           })
       })

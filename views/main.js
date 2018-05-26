@@ -7,7 +7,7 @@ module.exports = view
 function view (state, emit) {
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
 
-  if (state.oauth.user && state.links.length === 0) {
+  if (state.oauth.user && !state.linksGrabbed) { // TODO: timer
     emit('oauth:getTweets')
   }
 
