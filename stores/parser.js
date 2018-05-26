@@ -9,6 +9,7 @@ function store (state, emitter) {
           res.json()
             .then(json => {
               json.sharedBy = passed.sharedBy
+              json.tweetUrl = passed.tweetUrl
               state.links.push(json)
               emitter.emit(state.events.RENDER)
             })
