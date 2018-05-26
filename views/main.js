@@ -12,7 +12,7 @@ function view (state, emit) {
   }
 
   return html`
-    <body class="code lh-copy">
+    <body class="sans-serif lh-copy">
       <main class="pa3 cf center">
         <section class="fl mw6 w-50-m w-third-l pa3">
           <h2>${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'login!'}</h2>
@@ -26,7 +26,7 @@ function view (state, emit) {
               <h2>${link.author} - ${link.source ? link.source : link.domain}</h2>
               <p>${link.description}</p>
               <h5>${link.duration} minute read</h5>
-              <h5>Shared by ${link.sharedBy.name}</h5>
+              <h5><a href="${link.tweetUrl}">Shared by ${link.sharedBy.name}</a></h5>
 
             </div>
           </li>
