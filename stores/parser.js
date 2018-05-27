@@ -1,25 +1,36 @@
 module.exports = store
 
 function store (state, emitter) {
-  emitter.on('DOMContentLoaded', function () {
-    emitter.on('parser:parse', function (passed) {
-      const url = passed.url
-      fetch(`https://article-parser.now.sh/${url}`)
-        .then(res => {
-          res.json()
-            .then(json => {
-              json.sharedBy = passed.sharedBy
-              json.tweetUrl = passed.tweetUrl
-              state.links.push(json)
-              emitter.emit(state.events.RENDER)
-            })
-            .catch(err => {
-              console.log(err)
-            })
+  emitter.on('parser:findLinks', () => {
+    state.tweets.forEach(tweet => {
+      const urls = tweet.entities.urls
+      if (urls.length > 0) {
+        emitter.emit('parser:parse', {
+          sharedBy: tweet.user,
+          tweetUrl: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id}`,
+          url: urls[0].expanded_url
         })
-        .catch(err => {
-          console.log(err)
-        })
+      }
+      state.linksGrabbed = Date.now()
     })
+  })
+  emitter.on('parser:parse', function (passed) {
+    const url = passed.url
+    fetch(`https://article-parser.now.sh/${url}`)
+      .then(res => {
+        res.json()
+          .then(json => {
+            json.sharedBy = passed.sharedBy
+            json.tweetUrl = passed.tweetUrl
+            state.links.push(json)
+            emitter.emit(state.events.RENDER)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      })
+      .catch(err => {
+        console.log(err)
+      })
   })
 }

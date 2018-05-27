@@ -7,26 +7,43 @@ module.exports = view
 function view (state, emit) {
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
 
-  if (!!state.oauth && state.oauth.user && !state.linksGrabbed) { // TODO: timer
-    emit('oauth:getTweets')
+  if (!state.hasOwnProperty('oauth')) {
+    state.oauth = {}
+  }
+
+  if (state.oauth.user && !state.linksGrabbed) {
+    if (Date.now() - state.linksGrabbed > 900) {
+      emit('oauth:getTweets')
+    }
+    if (state.tweets) {
+      emit('parser:findLinks')
+    }
   }
 
   return html`
     <body class="bg-blue">
     <div class="pa2">
         <nav class="flex">
-          <h2 class="f3 w-90 dib ph3 lightest-blue">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'login!'}</h2>
-          <a href="/" class="f4 w-10 link washed-red hover-light-pink logout-link center" onclick=${handleClick}>
+          <h2 class="f3 w-90 dib ph3 lightest-blue">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'Twitter Feed Links'}</h2>
+          <a href="/" class="f4 w-10 link logout-link center ${state.oauth.user ? 'washed-red hover-light-pink' : 'lightest-blue hover-white'}" onclick=${handleClick}>
             ${state.oauth.user ? 'log out of' : 'log in to'} twitter
           </a>
         </nav>
         <section class="ph6 pv2">
+          ${state.links.length === 0 ? html`
+            <div>
+              <h1 class="f-headline lightest-blue measure-narrow">View the links of your Twitter feed</h1>
+              <p class="f1 lh-copy measure near-white ml1">
+                It's like Twitter but you can only view links! Isn't that cool
+              </p>
+            </div>
+          ` : ''}
           <ul>
           ${state.links.map(link => html`
           <li class="card shadow-4 br2 flex ph4 pv1 ma3 bg-near-white">
               <div class="flex-two-thirds flex flex-column space-around">
                 <div>
-                  <h1 class="lh-solid measure f1 b pb0 mb0"><a class="link hover-blue navy" href="${link.url}">${link.title}</a></h1>
+                  <h1 class="lh-solid measure f2 b pb0 mb0"><a class="link hover-blue navy" href="${link.url}">${link.title}</a></h1>
                   <h2 class="f3 pt1 mt0">${link.author ? `${link.author} • ` : ''}${link.source ? link.source : link.domain}</h2>
                   <div class="measure-narrow f4 lh-copy gray ">
                     <p>${link.description}</p>
@@ -43,7 +60,6 @@ function view (state, emit) {
                       <h5 class="pb0 mb0">${link.duration} minute read</h5>
                       <h5 class="pt0 mt0"><a class="link navy hover-blue" href="${link.tweetUrl}">Shared by ${link.sharedBy.name}</a></h5>
                     </div>
-                
               </div>
           </li>
           `)}

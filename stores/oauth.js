@@ -66,18 +66,15 @@ function store (state, emitter) {
       .then((response) => {
         response.json()
           .then((json) => {
-            state.linksGrabbed = true
-            json.data.forEach(tweet => {
-              const urls = tweet.entities.urls
-              if (urls.length > 0) {
-                emitter.emit('parser:parse', {
-                  sharedBy: tweet.user,
-                  tweetUrl: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id}`,
-                  url: urls[0].expanded_url
-                })
-              }
-            })
+            if (json.errors) {
+              console.warn('oh no twitter had an error. maybe display a message?')
+              return
+            }
+            state.tweets = json
             emitter.emit(state.events.RENDER)
+          })
+          .catch(err => {
+            console.warn(err)
           })
       })
   })

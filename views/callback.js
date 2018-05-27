@@ -11,9 +11,9 @@ function view (state, emit) {
   emit('oauth:verifyToken', state.query.oauth_token)
 
   return html`
-    <body class="code lh-copy">
-      <main class="pa3 cf center">
-      loading...
+    <body class="bg-blue lh-copy">
+      <main class="lightest-blue f-headline pa3 cf center">
+     
       </main>
     </body>
   `
