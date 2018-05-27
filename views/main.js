@@ -43,10 +43,7 @@ function view (state, emit) {
               ${state.oauth.user ? '' : html`
               <div>
                 <div class="db pt5 tl f1-ns f2 center ">
-                  <a href="/" class="pa3 link dark-blue hover-white fade hover-bg-blue ba" onclick=${handleClick}>Log in to begin </a>
-                </div>
-                <div class="absolute bottom-0">
-                  I want to be at the bottom
+                  <a href="/" class="fr normal f-subheadline-ns f1 pa4-ns pa3 link dark-blue hover-white fade hover-bg-blue ba" onclick=${handleClick}>Log in to begin </a>
                 </div>
               </div>
               `}
@@ -79,7 +76,7 @@ function view (state, emit) {
           </li>
           `)}
           </ul>
-          ${state.links.length > 0 ? html`<a class="pl6 center link white hover-lightest-blue f-subheadline" href="#">More is on the way...</a>` : ''}
+            ${state.links.length > 0 && false /* temp disabled TODO:... */ ? html`<a class="pl6 center link white hover-lightest-blue f-subheadline" href="#">More is on the way...</a>` : ''}
 
         </section>
         </div>
