@@ -38,3 +38,10 @@
 .space-around {
   justify-content: space-between;
 }
+
+p::-moz-selection {
+  background-color: #96ccff;
+}
+p::selection {
+  background-color: #96ccff;
+}

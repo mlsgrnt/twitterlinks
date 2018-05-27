@@ -35,6 +35,7 @@ function view (state, emit) {
               <h1 class="f-headline lightest-blue measure-narrow">View the links of your Twitter feed</h1>
               <p class="f1 lh-copy measure near-white ml1">
                 It's like Twitter but you can only view links! Isn't that cool
+                ${state.error ? state.error : ''}
               </p>
             </div>
           ` : ''}

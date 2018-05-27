@@ -5,6 +5,7 @@ const fetch = window.fetch ? window.fetch : console.log // bad hack, but hey
 function store (state, emitter) {
   state.linksGrabbed = false
   state.links = []
+  state.error = false
 
   emitter.on('oauth:requestToken', () => {
     if (!state.oauth) {
@@ -25,7 +26,10 @@ function store (state, emitter) {
   emitter.on('oauth:verifyToken', (token) => {
     const verified = token === state.oauth.oAuthToken
     if (verified) emitter.emit('oauth:accessToken')
-    else console.error('oh no')
+    else {
+      state.error = 'oauthVerificationError'
+      emitter.emit(state.events.RENDER)
+    }
   })
   emitter.on('oauth:accessToken', () => {
     fetch('https://smooth-octagon.glitch.me/?type=auth_token', {
@@ -67,7 +71,9 @@ function store (state, emitter) {
         response.json()
           .then((json) => {
             if (json.errors) {
-              console.warn('oh no twitter had an error. maybe display a message?')
+              console.warn(json.errors)
+              state.error = 'feedLoadingError'
+              emitter.emit(state.events.RENDER)
               return
             }
             state.tweets = json
