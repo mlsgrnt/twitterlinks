@@ -14,6 +14,7 @@ function store (state, emitter) {
         }
       })
       state.linksGrabbed = Date.now()
+      setTimeout(() => emitter.emit('pocket:loadButtons'), 5000) // bad hack :(
     }
   })
   emitter.on('parser:parse', function (passed) {

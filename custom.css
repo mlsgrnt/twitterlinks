@@ -47,7 +47,7 @@ body::selection {
 }
 
 .hidden {
-  transform: translateY(-10000px);
+  transform: translateY(-1000px);
 }
 .animate {
   transition: all 1s ease-in-out;
