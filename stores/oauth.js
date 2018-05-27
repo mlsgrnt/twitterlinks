@@ -1,6 +1,6 @@
 module.exports = store
 
-const fetch = window.fetch ? window.fetch : console.log // bad hack, but hey
+const fetch = require('node-fetch') // oh man this is so so so bad i'mso sorry but it's the only way to get the build to work
 
 function store (state, emitter) {
   state.linksGrabbed = false

@@ -29,7 +29,7 @@ function view (state, emit) {
     ? html`<a href="/" class="tr f4-ns f5 w-30 link logout-link center pr1 pr0-ns washed-red hover-light-pink" onclick=${handleClick}> Log out </a> ` : ''}
         </nav>
         <section class="ph6-ns ph0 pv2 ${state.oauth.user ? 'lightest-blue' : 'blue'}">
-            <div class="animate ${state.links.length > 0 ? '' : ''} mb5-ns">
+            <div class="mb5-ns">
               <h1 class="f-headline  measure-narrow ma0 pa0">Linkr</h1>
               <p style="line-height:0.5" class="f1-ns f2 lh-copy measure  pa0 ma0 mb4 ">
               <span>Twitter; just the links</span>
