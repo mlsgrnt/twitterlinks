@@ -24,8 +24,8 @@ function view (state, emit) {
     <body class="bg-blue">
     <div class="pa2">
         <nav class="flex">
-          <h2 class="f3 w-90 dib ph3 lightest-blue">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : ''}</h2>
-          <a href="/" class="f4 w-10 link logout-link center ${state.oauth.user ? 'washed-red hover-light-pink' : 'lightest-blue hover-white'}" onclick=${handleClick}>
+          <h2 class="f3 w-70 dib ph3 lightest-blue">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : ''}</h2>
+          <a href="/" class="tr f4 w-30 link logout-link center ${state.oauth.user ? 'washed-red hover-light-pink' : 'lightest-blue hover-white'}" onclick=${handleClick}>
             ${state.oauth.user ? 'log out of' : 'log in to'} twitter
           </a>
         </nav>
