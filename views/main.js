@@ -60,7 +60,7 @@ function view (state, emit) {
                 ${link.image ? html`<img class="ma1" src="${link.image}"></img>` : ''}
                     <div class="tr f4 lh-copy gray">
                       <h5 class="pb0 mb0">${link.duration} minute read</h5>
-                      <h5 class="pt0 mt0"><a class="link navy hover-blue" href="${link.tweetUrl}">Shared by ${link.sharedBy.name}</a></h5>
+                      <h5 class="pt0 mt0">Shared by <a class="link navy hover-blue" href="${link.tweetUrl}">${link.sharedBy.name}</a></h5>
                     </div>
               </div>
           </li>
