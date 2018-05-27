@@ -12,11 +12,11 @@ function view (state, emit) {
 
   return html`
     <body class="bg-dark-blue lh-copy">
-      <main class="lightest-blue f-headline pa3 cf center">
+      <main class="flex lightest-blue f-headline pa3 cf center">
      ${state.error ? html`
      <div>
-     <a href="/" class="white b link">Try again...</a>
-      ${state.error}
+      ${state.error}<br>
+     <a href="/" class="white hover-lightest-blue b link">Try again...</a>
     </div>
      ` : ''}
       </main>
