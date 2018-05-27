@@ -21,27 +21,39 @@ function view (state, emit) {
   }
 
   return html`
-    <body class="bg-${state.oauth.user ? 'blue' : 'dark-blue'}">
+    <body class="bg-${state.oauth.user ? 'blue' : 'near-white'}">
     <div class="pa2-ns pa0">
         <nav class="flex">
           <h2 class="f3-ns f4 w-70 dib ph3 lightest-blue">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : ''}</h2>
           ${state.oauth.user
     ? html`<a href="/" class="tr f4-ns f5 w-30 link logout-link center pr1 pr0-ns washed-red hover-light-pink" onclick=${handleClick}> Log out </a> ` : ''}
         </nav>
-        <section class="ph6-ns ph0 pv2">
+        <section class="ph6-ns ph0 pv2 ${state.oauth.user ? 'lightest-blue' : 'blue'}">
             <div class="animate ${state.links.length > 0 ? '' : ''} mb5-ns">
-              <h1 class="f-headline lightest-blue measure-narrow ma0 pa0">Linkr</h1>
-              <p style="line-height:0.5" class="f1-ns f2 lh-copy measure lightest-blue pa0 ma0 mb4 ">
+              <h1 class="f-headline  measure-narrow ma0 pa0">Linkr</h1>
+              <p style="line-height:0.5" class="f1-ns f2 lh-copy measure  pa0 ma0 mb4 ">
               <span>Twitter; just the links</span>
               </p>
-                ${state.error ? html`
-                  <div class="pt3 lh-solid pv2">
-                    <a class="washed-red link b" href="#" onclick=${clearerror}>Can not fetch tweets. ${state.errorDetail[0].message}.<br> Click me to try again.</a>
-                  </div>
-                ` : ''}
+              ${state.error ? html`
+                 <div class="pt3 lh-solid pv2">
+                   <a class="washed-red link b" href="#" onclick=${clearerror}>Can not fetch tweets. ${state.errorDetail[0].message}.<br> Click me to try again.</a>
+                 </div>
+              ` : ''}
 
-              ${state.oauth.user ? '' : html`<div class="db pt5 tl f1-ns f2 center "><a href="/" class="pa2 link near-white hover-dark-blue fade hover-bg-washed-blue  b--washed-blue" onclick=${handleClick}>Log in to begin </a></div>`}
+              ${state.oauth.user ? '' : html`
+              <div>
+                <div class="db pt5 tl f1-ns f2 center ">
+                  <a href="/" class="pa3 link dark-blue hover-white fade hover-bg-blue ba" onclick=${handleClick}>Log in to begin </a>
+                </div>
+                <div class="absolute bottom-0">
+                  I want to be at the bottom
+                </div>
               </div>
+              `}
+            </div>
+
+
+
           <ul class="pa0 ma0">
           ${state.links.map(link => html`
           <li class="list pl0 card shadow-4 br2 flex-ns ph4-ns ph4 pv1 ma0 mv3 ma3-ns bg-near-white">
@@ -67,7 +79,7 @@ function view (state, emit) {
           </li>
           `)}
           </ul>
-          ${state.links.length > 0 ? html`<span class="pl6 center white f-subheadline">More is on the way...</span>` : ''}
+          ${state.links.length > 0 ? html`<a class="pl6 center link white hover-lightest-blue f-subheadline" href="#">More is on the way...</a>` : ''}
 
         </section>
         </div>
