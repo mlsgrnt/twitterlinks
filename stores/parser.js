@@ -1,6 +1,9 @@
 module.exports = store
 
 function store (state, emitter) {
+  state.cardsLoaded = 0
+  state.debounceTimeout
+
   emitter.on('parser:findLinks', () => {
     if (state.hasOwnProperty('tweets')) {
       state.tweets.forEach(tweet => {
@@ -14,7 +17,6 @@ function store (state, emitter) {
         }
       })
       state.linksGrabbed = Date.now()
-      setTimeout(() => emitter.emit('pocket:loadButtons'), 5000) // bad hack :(
     }
   })
   emitter.on('parser:parse', function (passed) {
@@ -26,7 +28,7 @@ function store (state, emitter) {
             json.sharedBy = passed.sharedBy
             json.tweetUrl = passed.tweetUrl
             state.links.push(json)
-            emitter.emit(state.events.RENDER)
+            emitter.emit('parser:debounceRender')
           })
           .catch(err => {
             console.log(err)
@@ -35,5 +37,14 @@ function store (state, emitter) {
       .catch(err => {
         console.log(err)
       })
+  })
+  emitter.on('parser:debounceRender', () => {
+    if (state.cardsLoaded !== false) state.cardsLoaded++
+    if (state.cardsLoaded > 3) {
+      state.cardsLoaded = false
+      emitter.emit(state.events.RENDER) // show something to teh user as the rest load in
+    }
+    clearTimeout(state.debounceTimeout)
+    state.debounceTimeout = setTimeout(() => { emitter.emit(state.events.RENDER); emitter.emit('pocket:loadButtons') }, 1500)
   })
 }

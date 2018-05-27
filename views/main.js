@@ -65,7 +65,9 @@ function view (state, emit) {
               </div>
           </li>
           `)}
+            
           </ul>
+          ${state.links.length > 0 ? html`<span class="pl6 center white f-subheadline">More is on the way...</span>` : ''}
 
         </section>
         </div>
