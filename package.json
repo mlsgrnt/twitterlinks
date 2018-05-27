@@ -1,7 +1,6 @@
 {
   "name": "twitterLinks",
   "version": "1.0.0",
-  "private": true,
   "scripts": {
     "build": "bankai build index.js",
     "create": "choo-scaffold",

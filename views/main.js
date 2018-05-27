@@ -76,7 +76,6 @@ function view (state, emit) {
           </li>
           `)}
           </ul>
-            ${state.links.length > 0 && false /* temp disabled TODO:... */ ? html`<a class="pl6 center link white hover-lightest-blue f-subheadline" href="#">More is on the way...</a>` : ''}
 
         </section>
         </div>
