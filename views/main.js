@@ -11,7 +11,7 @@ function view (state, emit) {
     state.oauth = {}
   }
 
-  if (state.oauth.user && !state.linksGrabbed) {
+  if (state.oauth.user && !state.linksGrabbed && !state.error) {
     if (Date.now() - state.linksGrabbed > 900) {
       emit('oauth:getTweets')
     }
@@ -35,7 +35,9 @@ function view (state, emit) {
               <h1 class="f-headline lightest-blue measure-narrow">View the links of your Twitter feed</h1>
               <p class="f1 lh-copy measure near-white ml1">
                 It's like Twitter but you can only view links! Isn't that cool
-                ${state.error ? state.error : ''}
+                ${state.error ? html`
+                  <a class="white link b" href="#" onclick=${clearerror}>${state.error}. click me to try again</a>
+                ` : ''}
               </p>
             </div>
           ` : ''}
@@ -77,5 +79,8 @@ function view (state, emit) {
     } else {
       emit('oauth:deleteToken')
     }
+  }
+  function clearerror () {
+    emit('clearerror')
   }
 }

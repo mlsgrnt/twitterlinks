@@ -13,7 +13,12 @@ function view (state, emit) {
   return html`
     <body class="bg-blue lh-copy">
       <main class="lightest-blue f-headline pa3 cf center">
-     ${state.error ? state.error : ''}
+     ${state.error ? html`
+     <div>
+     <a href="/" class="white b link">Try again...</a>
+      ${state.error}
+    </div>
+     ` : ''}
       </main>
     </body>
   `

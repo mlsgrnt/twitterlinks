@@ -84,4 +84,9 @@ function store (state, emitter) {
           })
       })
   })
+
+  emitter.on('clearerror', () => {
+    state.error = false
+    emitter.emit(state.events.RENDER)
+  })
 }
