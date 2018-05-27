@@ -24,15 +24,16 @@ function view (state, emit) {
     <body class="bg-blue">
     <div class="pa2">
         <nav class="flex">
-          <h2 class="f3 w-90 dib ph3 lightest-blue">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'Linkr'}</h2>
+          <h2 class="f3 w-90 dib ph3 lightest-blue">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : ''}</h2>
           <a href="/" class="f4 w-10 link logout-link center ${state.oauth.user ? 'washed-red hover-light-pink' : 'lightest-blue hover-white'}" onclick=${handleClick}>
             ${state.oauth.user ? 'log out of' : 'log in to'} twitter
           </a>
         </nav>
         <section class="ph6 pv2">
-            <div class="animate ${state.links.length > 0 ? 'hidden' : ''}">
-              <h1 class="f-headline lightest-blue measure-narrow">Twitter; just the links</h1>
-              <p class="f1 lh-copy measure near-white ml1">
+            <div class="animate ${state.links.length > 0 ? '' : ''}">
+              <h1 class="f-headline lightest-blue measure-narrow ma0 pa0">Linkr</h1>
+              <p class="f1 lh-copy measure near-white pa0 ma0">
+              Twitter; just the links
                 ${state.error ? html`
                   <a class="white link b" href="#" onclick=${clearerror}>${state.errorDetail[0].message}. Click me to try again.</a>
                 ` : ''}
@@ -52,7 +53,7 @@ function view (state, emit) {
                   </div>
                 </div>
                 <div class="pb4">
-                    <a data-pocket-label="pocket" data-save-url="${link.url}" data-pocket-count="horizontal" class="pocket-btn" data-lang="en"></a>
+                    <a data-pocket-label="pocket" data-save-url="${link.url}" data-pocket-count="vertical" class="pocket-btn" data-lang="en"></a>
                 </div>
               </div>
               <div class="flex-one-third article-image pa0 ma0 ph1 pt5">
