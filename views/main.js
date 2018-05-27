@@ -1,6 +1,6 @@
 var html = require('choo/html')
 
-var TITLE = 'twitterLinks - main'
+var TITLE = 'Linkr'
 
 module.exports = view
 
@@ -57,7 +57,7 @@ function view (state, emit) {
               <div class="flex-two-thirds flex-ns flex-column space-around">
                 <div class="measure-wide">
                   <h1 class="lh-solid  measure f2-ns f3 b pb0 mb0"><a class="link hover-blue dark-gray" href="${link.url}">${link.title}</a></h1>
-                  <h2 class="f3-ns f5 pt1 mt0 normal gray">${link.author ? `${link.author} • ` : ''}${link.source ? link.source : link.domain}</h2>
+                  <h2 class="f3-ns f5 pt1 mt0 normal gray">${link.author ? `${link.author} | ` : ''}${link.source ? link.source : link.domain}</h2>
                   <div class="measure-narrow normal f4 lh-copy gray ">
                     <p>${link.description}</p>
                   </div>
