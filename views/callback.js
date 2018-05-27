@@ -1,6 +1,6 @@
 var html = require('choo/html')
 
-var TITLE = 'twitterLinks - callback'
+var TITLE = 'loading...'
 
 module.exports = view
 
@@ -11,7 +11,7 @@ function view (state, emit) {
   emit('oauth:verifyToken', state.query.oauth_token)
 
   return html`
-    <body class="bg-blue lh-copy">
+    <body class="bg-dark-blue lh-copy">
       <main class="lightest-blue f-headline pa3 cf center">
      ${state.error ? html`
      <div>

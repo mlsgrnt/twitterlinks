@@ -6,10 +6,15 @@
     sans-serif;
 }
 
+body {
+  transition: background-color 0.3s ease-in;
+}
+
 .logout-link {
   align-self: center;
 }
 .article-image {
+  align-self: flex-end;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

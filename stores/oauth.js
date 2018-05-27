@@ -55,6 +55,8 @@ function store (state, emitter) {
     state.links = []
     state.linksGrabbed = false
     state.oauth = {}
+    state.error = false
+    state.errorDetail = null
 
     emitter.emit('render')
   })
