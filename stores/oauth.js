@@ -3,7 +3,6 @@ module.exports = store
 const fetch = window.fetch ? window.fetch : console.log // bad hack, but hey
 
 function store (state, emitter) {
-  state.oauth = {}
   state.linksGrabbed = false
   state.links = []
 
@@ -74,7 +73,8 @@ function store (state, emitter) {
                 emitter.emit('parser:parse', {
                   sharedBy: tweet.user,
                   tweetUrl: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id}`,
-                  url: urls[0].expanded_url })
+                  url: urls[0].expanded_url
+                })
               }
             })
             emitter.emit(state.events.RENDER)

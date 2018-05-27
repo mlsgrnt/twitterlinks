@@ -9,3 +9,24 @@
 .logout-link {
   align-self: center;
 }
+.article-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card {
+  max-width: 65vw;
+  min-height: 400px;
+}
+
+.flex-one-third {
+  flex: 2;
+}
+.flex-two-thirds {
+  flex: 3;
+}
+
+.space-around {
+  justify-content: space-between;
+}
