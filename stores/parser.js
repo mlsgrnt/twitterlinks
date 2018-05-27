@@ -27,6 +27,7 @@ function store (state, emitter) {
           .then(json => {
             json.sharedBy = passed.sharedBy
             json.tweetUrl = passed.tweetUrl
+            json.duration = Math.ceil(json.duration / 60)
             state.links.push(json)
             emitter.emit('parser:debounceRender')
           })
