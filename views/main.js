@@ -24,23 +24,22 @@ function view (state, emit) {
     <body class="bg-blue">
     <div class="pa2">
         <nav class="flex">
-          <h2 class="f3 w-90 dib ph3 lightest-blue">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'Twitter Feed Links'}</h2>
+          <h2 class="f3 w-90 dib ph3 lightest-blue">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'Linkr'}</h2>
           <a href="/" class="f4 w-10 link logout-link center ${state.oauth.user ? 'washed-red hover-light-pink' : 'lightest-blue hover-white'}" onclick=${handleClick}>
             ${state.oauth.user ? 'log out of' : 'log in to'} twitter
           </a>
         </nav>
         <section class="ph6 pv2">
-          ${state.links.length === 0 ? html`
-            <div>
-              <h1 class="f-headline lightest-blue measure-narrow">View the links of your Twitter feed</h1>
+            <div class="animate ${state.links.length > 0 ? 'hidden' : ''}">
+              <h1 class="f-headline lightest-blue measure-narrow">Twitter; just the links</h1>
               <p class="f1 lh-copy measure near-white ml1">
-                It's like Twitter but you can only view links! Isn't that cool
                 ${state.error ? html`
-                  <a class="white link b" href="#" onclick=${clearerror}>${state.error}. click me to try again</a>
+                  <a class="white link b" href="#" onclick=${clearerror}>${state.errorDetail[0].message}. Click me to try again.</a>
                 ` : ''}
+
               </p>
             </div>
-          ` : ''}
+          
           <ul>
           ${state.links.map(link => html`
           <li class="card shadow-4 br2 flex ph4 pv1 ma3 bg-near-white">

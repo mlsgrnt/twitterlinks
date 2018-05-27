@@ -39,9 +39,16 @@
   justify-content: space-between;
 }
 
-p::-moz-selection {
+body::-moz-selection {
   background-color: #96ccff;
 }
-p::selection {
+body::selection {
   background-color: #96ccff;
+}
+
+.hidden {
+  transform: translateY(-10000px);
+}
+.animate {
+  transition: all 1s ease-in-out;
 }

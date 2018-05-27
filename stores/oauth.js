@@ -70,13 +70,14 @@ function store (state, emitter) {
       .then((response) => {
         response.json()
           .then((json) => {
-            if (json.errors) {
+            if (Object.keys(json.errors).length > 0) {
               console.warn(json.errors)
               state.error = 'feedLoadingError'
+              state.errorDetail = JSON.parse(json.errors.data).errors
               emitter.emit(state.events.RENDER)
               return
             }
-            state.tweets = json
+            state.tweets = json.data
             emitter.emit(state.events.RENDER)
           })
           .catch(err => {
