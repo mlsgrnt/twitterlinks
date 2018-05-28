@@ -53,7 +53,7 @@ function view (state, emit) {
 
           <ul class="pa0 ma0">
           ${state.links.map(link => html`
-          <li class="list pl0 card shadow-4 br2 flex-ns ph4-ns ph4 pv1 ma0 mv3 ma3-ns bg-near-white">
+          <li class="list pl0 card shadow-4 br2 flex-ns justify-between ph4-ns ph4 pv1 ma0 mv3 ma3-ns bg-near-white">
               <div class="flex-two-thirds flex-ns flex-column space-around">
                 <div class="measure-wide">
                   <h1 class="lh-solid  measure f2-ns f3 b pb0 mb0"><a class="link hover-blue dark-gray" href="${link.url}">${link.title}</a></h1>
@@ -66,7 +66,7 @@ function view (state, emit) {
                     <a data-pocket-label="pocket" data-save-url="${link.url}" data-pocket-count="vertical" class="pocket-btn" data-lang="en"></a>
                 </div>
               </div>
-              <div class="flex-one-third article-image pa0 ma0 ph1 pt5-ns">
+              <div class="flex-one-third article-image pa0 ma0 ph1 pt3-ns">
                 ${link.image ? html`<img class="ma1" src="${link.image}"></img>` : ''}
                     <div class="tr f4 lh-copy gray">
                       <h5 class="pb0 mb0 normal">${link.duration} minute read</h5>
