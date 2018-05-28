@@ -36,7 +36,7 @@ function view (state, emit) {
               </p>
               ${state.error ? html`
                  <div class="pt3 lh-solid pv2">
-                   <a class="washed-red link b" href="#" onclick=${clearerror}>Can not fetch tweets. ${state.errorDetail[0].message}.<br> Click me to try again.</a>
+                  <a class="washed-red link b" href="#" onclick=${clearerror}>Can not fetch tweets. ${state.errorDetail.length > 0 ? state.errorDetail[0].message : ''}.<br> Click me to try again.</a>
                  </div>
               ` : ''}
 
