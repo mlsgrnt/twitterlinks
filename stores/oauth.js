@@ -21,7 +21,7 @@ function store (state, emitter) {
       })
   })
   emitter.on('oauth:redirectUser', (token) => {
-    window.location = `https://api.twitter.com/oauth/authenticate?oauth_token=${token}`
+    window.location.replace(`https://api.twitter.com/oauth/authenticate?oauth_token=${token}`)
   })
   emitter.on('oauth:verifyToken', (token) => {
     const verified = token === state.oauth.oAuthToken
