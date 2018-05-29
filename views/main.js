@@ -41,9 +41,9 @@ function view (state, emit) {
               ` : ''}
 
               ${state.oauth.user ? '' : html`
-              <div>
+              <div class="w-100 flex">
                 <div class="db pt5 tl f1-ns f2 center ">
-                  <a href="/" class="fr normal f-subheadline-ns f1 pa4-ns pa3 link dark-blue hover-white fade hover-bg-blue ba" onclick=${handleClick}>Log in to begin </a>
+                  <a onclick=${handleClick} class="f1 link dim br2 ph5 pv2 mb2 dib white bg-blue" href="/">Log in to Twitter</a>
                 </div>
               </div>
               `}
