@@ -1,8 +1,8 @@
 module.exports = store
 
 function store (state, emitter) {
-  state.cardsLoaded = 0
-  state.debounceTimeout
+  state.debounceTimeout = null
+  let continuousRender = null
 
   emitter.on('parser:findLinks', () => {
     if (state.hasOwnProperty('tweets')) {
@@ -17,6 +17,10 @@ function store (state, emitter) {
         }
       })
       state.linksGrabbed = Date.now()
+      // start render interval, this is cleared when all are loaded
+      continuousRender = setInterval(() => {
+        emitter.emit(state.events.RENDER)
+      }, 1000)
     }
   })
   emitter.on('parser:parse', function (passed) {
@@ -40,12 +44,7 @@ function store (state, emitter) {
       })
   })
   emitter.on('parser:debounceRender', () => {
-    if (state.cardsLoaded !== false) state.cardsLoaded++
-    if (state.cardsLoaded > 3) {
-      state.cardsLoaded = false
-      emitter.emit(state.events.RENDER) // show something to teh user as the rest load in
-    }
     clearTimeout(state.debounceTimeout)
-    state.debounceTimeout = setTimeout(() => { emitter.emit(state.events.RENDER); emitter.emit('pocket:loadButtons') }, 1500)
+    state.debounceTimeout = setTimeout(() => { clearTimeout(continuousRender); emitter.emit('pocket:loadButtons') }, 1500)
   })
 }
