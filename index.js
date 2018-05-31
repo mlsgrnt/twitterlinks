@@ -13,12 +13,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(persist())
-app.use(require('./stores/parser'))
+// app.use(require('./stores/parser'))
 app.use(require('./stores/oauth'))
 app.use(require('./stores/pocket'))
 
 app.route('/', require('./views/main'))
+app.route('/login', require('./views/login'))
 app.route('/callback', require('./views/callback'))
-app.route('/*', require('./views/404'))
+app.route('/*', require('./views/callback'))
 
 module.exports = app.mount('body')

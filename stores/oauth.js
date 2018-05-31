@@ -32,6 +32,7 @@ function store (state, emitter) {
     }
   })
   emitter.on('oauth:accessToken', () => {
+    if (!window) return
     fetch('https://smooth-octagon.glitch.me/?type=auth_token', {
       method: 'POST',
       body: JSON.stringify({
@@ -56,7 +57,6 @@ function store (state, emitter) {
     state.linksGrabbed = false
     state.oauth = {}
     state.error = false
-    state.errorDetail = null
 
     emitter.emit('render')
   })
@@ -74,8 +74,7 @@ function store (state, emitter) {
           .then((json) => {
             if (Object.keys(json.errors).length > 0) {
               console.warn(json.errors)
-              state.error = 'feedLoadingError'
-              state.errorDetail = JSON.parse(json.errors.data).errors
+              state.error = JSON.parse(json.errors.data).errors
               emitter.emit(state.events.RENDER)
               return
             }
