@@ -25,7 +25,7 @@ function view (state, emit) {
           <h2 class="w5-ns normal cursor-normal">${!state.viewingUser ? `@${state.oauth.user.screen_name}'s Timeline` : `Tweeted by @${state.viewingUser}`}</h2>
           <h1 class="w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
           <a href="/" class="b w5-ns tr f3 link red hover-light-red" onclick=${handleClick}>Log out</a>
-          ${state.viewingUser ? html`<a href="/" class="pl2 b w5-ns tl f3 link black hover-blue" onclick=${viewMyself}>View Timeline</a> ` : ''}        
+          ${state.viewingUser ? html`<a href="/" class="pl2 b  tl f3 link black hover-blue" onclick=${viewMyself}>View Timeline</a> ` : ''}        
         </nav>
         <section class="">
           ${state.links.length === 0 ? html`<div class="pa5 f1-ns f3">Cute loading message and spinner go here</div>` : ''}

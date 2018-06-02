@@ -64,6 +64,10 @@ function store (state, emitter) {
     emitter.emit(state.events.PUSHROUTE, '/login')
   })
   emitter.on('oauth:getUser', (targetUserId) => {
+    state.links = []
+    state.tweets = []
+    emitter.emit(state.events.RENDER)
+
     fetch('https://smooth-octagon.glitch.me/?type=user', {
       method: 'POST',
       body: JSON.stringify({
@@ -85,9 +89,7 @@ function store (state, emitter) {
             }
             state.tweets = json.data
             state.tweetsGrabbed = Date.now()
-
-            // redirect to main
-            emitter.emit(state.events.PUSHSTATE, '/')
+            state.viewingUser = targetUserId
 
             json.data.forEach(tweet => {
               emitter.emit('parser:parse', tweet)
