@@ -60,7 +60,8 @@ function store (state, emitter) {
     state.error = false
     state.errorDetail = null
 
-    emitter.emit(state.events.RENDER)
+    // emitter.emit(state.events.RENDER)
+    emitter.emit(state.events.PUSHROUTE, '/login')
   })
   emitter.on('oauth:getTweets', () => {
     fetch('https://smooth-octagon.glitch.me/?type=tweets', {

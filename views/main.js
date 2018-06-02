@@ -29,14 +29,12 @@ function view (state, emit) {
           </a>
         </nav>
         <section class="">
-            <div class="">
-              ${state.error ? html`
-                 <div class="">
-                  <a class="red link b" href="#" onclick=${clearerror}>Can not fetch tweets. ${state.errorDetail && state.errorDetail.length > 0 ? state.errorDetail[0].message : ''}.<br> Click me to try again.</a>
+          ${state.links.length === 0 ? html`<div class="pa5 f1-ns f3">Cute loading message and spinner go here</div>` : ''}
+          ${state.error ? html`
+                 <div class="pa5 f1-ns f3">
+                  <a class="red link b" href="#" onclick=${clearerror}>Oh dear there's been a problem: ${state.errorDetail && state.errorDetail.length > 0 ? state.errorDetail[0].message : ''}.<br>Click to try again.</a>
                  </div>
-              ` : ''}
-
-            </div>
+         ` : ''}
 
           <ul class="pa0 ma0">
           ${state.links.map(link => html`
@@ -70,7 +68,6 @@ function view (state, emit) {
     emit('oauth:deleteToken')
   }
   function mouseover (id) {
-    console.log(id)
     emit('effects:linkHover', id)
   }
   function clearerror () {
