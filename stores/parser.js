@@ -2,11 +2,14 @@
 module.exports = store
 
 function store (state, emitter) {
+  state.renderedCount = 0
+  state.renderLimit = 20
+
   emitter.on('parser:parse', function (tweet) {
     if (tweet.entities.urls.length === 0) return
 
     const url = tweet.entities.urls[0].expanded_url
-    fetch(`https://article-parser.now.sh/${url}`)
+    fetch(`https://article-parser.now.sh/${url}`, {signal: fetchAbortSignal})
       .then(res => {
         res.json()
           .then(json => {
@@ -20,15 +23,9 @@ function store (state, emitter) {
 
             state.links.push(json)
 
-            // rendering too often crashes choo so we have to be smart about it:
-            if (state.links.length === state.tweets.length || state.links.length % 20 === 0) {
-              emitter.emit(state.events.RENDER)
-            }
+            if (state.renderedCount < state.renderLimit) emitter.emit(state.events.RENDER)
 
-            // if there are hardly any tweets and we're close to the full tweet count let's just render
-            if (state.tweets.length < 10) {
-              emitter.emit(state.events.RENDER)
-            }
+            state.renderedCount++
           })
           .catch(err => {
             console.log(err)
