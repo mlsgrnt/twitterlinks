@@ -3,7 +3,9 @@ module.exports = store
 
 function store (state, emitter) {
   emitter.on('parser:parse', function (tweet) {
-    const url = tweet.entities.urls[0].expanded_url // we can do this because the api only returns tweets with urls
+    if (tweet.entities.urls.length === 0) return
+
+    const url = tweet.entities.urls[0].expanded_url
     fetch(`https://article-parser.now.sh/${url}`)
       .then(res => {
         res.json()

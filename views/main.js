@@ -11,7 +11,7 @@ function view (state, emit) {
   if (!state.oauth.user) return html`<body><script>window.location='/login'</script></body>`
 
   if (state.links.length === 0) {
-    if (!state.tweets) { // || (Date.now() - state.tweetsGrabbed > 900)) {
+    if (!state.tweets || (Date.now() - state.tweetsGrabbed > 900)) {
       emit('oauth:getTweets')
     } else {
       state.tweets.forEach(tweet => emit('parser:parse', tweet))
