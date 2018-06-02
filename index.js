@@ -20,6 +20,7 @@ app.use(require('./stores/effects'))
 app.route('/', require('./views/main'))
 app.route('/callback', require('./views/callback'))
 app.route('/login', require('./views/login'))
+app.route('/user/:user', require('./views/user'))
 app.route('/*', require('./views/404'))
 
 module.exports = app.mount('body')

@@ -63,7 +63,50 @@ function store (state, emitter) {
     // emitter.emit(state.events.RENDER)
     emitter.emit(state.events.PUSHROUTE, '/login')
   })
-  emitter.on('oauth:getTweets', () => {
+  emitter.on('oauth:getUser', (targetUserId) => {
+    fetch('https://smooth-octagon.glitch.me/?type=user', {
+      method: 'POST',
+      body: JSON.stringify({
+        accessToken: state.oauth.accessToken,
+        accessTokenSecret: state.oauth.accessTokenSecret,
+        userId: state.oauth.user.id,
+        targetUserId: targetUserId
+      })
+    })
+      .then((response) => {
+        response.json()
+          .then((json) => {
+            if (Object.keys(json.errors).length > 0) {
+              console.warn(json.errors)
+              state.error = 'feedLoadingError'
+              state.errorDetail = JSON.parse(json.errors.data).errors
+              emitter.emit(state.events.RENDER)
+              return
+            }
+            state.tweets = json.data
+            state.tweetsGrabbed = Date.now()
+
+            // redirect to main
+            emitter.emit(state.events.PUSHSTATE, '/')
+
+            json.data.forEach(tweet => {
+              emitter.emit('parser:parse', tweet)
+            })
+          })
+          .catch(err => {
+            console.warn(err)
+          })
+      })
+  })
+
+  emitter.on('oauth:viewMyself', () => {
+    state.viewingUser = false
+    state.tweetsGrabbed = false
+    state.tweets = []
+    state.links = []
+    emitter.emit(state.events.RENDER)
+  })
+  emitter.on('oauth:getTimeline', () => {
     fetch('https://smooth-octagon.glitch.me/?type=tweets', {
       method: 'POST',
       body: JSON.stringify({

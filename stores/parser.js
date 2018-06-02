@@ -24,6 +24,11 @@ function store (state, emitter) {
             if (state.links.length === state.tweets.length || state.links.length % 20 === 0) {
               emitter.emit(state.events.RENDER)
             }
+
+            // if there are hardly any tweets and we're close to the full tweet count let's just render
+            if (state.tweets.length < 10) {
+              emitter.emit(state.events.RENDER)
+            }
           })
           .catch(err => {
             console.log(err)

@@ -11,8 +11,8 @@ function view (state, emit) {
   if (!state.oauth.user) return html`<body><script>window.location='/login'</script></body>`
 
   if (state.links.length === 0) {
-    if (!state.tweets || (Date.now() - state.tweetsGrabbed > 900)) { // 15 minutes
-      emit('oauth:getTweets')
+    if (!state.viewingUser && (!state.tweets || (Date.now() - state.tweetsGrabbed > 900000))) { // 15 minutes
+      emit('oauth:getTimeline')
     } else {
       state.tweets.forEach(tweet => emit('parser:parse', tweet))
     }
@@ -22,9 +22,10 @@ function view (state, emit) {
     <body class="">
     <div class="">
         <nav class="flex flex-wrap justify-between items-center ph1 ph4-ns">
-          <h2 class="w5-ns normal cursor-normal">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'Hello'}</h2>
+          <h2 class="w5-ns normal cursor-normal">${!state.viewingUser ? `@${state.oauth.user.screen_name}'s Timeline` : `Tweeted by @${state.viewingUser}`}</h2>
           <h1 class="w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
           <a href="/" class="b w5-ns tr f3 link red hover-light-red" onclick=${handleClick}>Log out</a>
+          ${state.viewingUser ? html`<a href="/" class="pl2 b w5-ns tl f3 link black hover-blue" onclick=${viewMyself}>View Timeline</a> ` : ''}        
         </nav>
         <section class="">
           ${state.links.length === 0 ? html`<div class="pa5 f1-ns f3">Cute loading message and spinner go here</div>` : ''}
@@ -64,6 +65,9 @@ function view (state, emit) {
 
   function handleClick () {
     emit('oauth:deleteToken')
+  }
+  function viewMyself () {
+    emit('oauth:viewMyself')
   }
   function mouseover (id) {
     emit('effects:linkHover', id)
