@@ -4,6 +4,7 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  transition: opacity 0.2s ease-out;
 }
 
 body {
@@ -55,4 +56,12 @@ body::selection {
 }
 .animate {
   transition: all 1s ease-in-out;
+}
+
+.article {
+  background-blend-mode: multiply;
+  transition: background-color 0.2s ease-out;
+}
+.hover-underline:hover {
+  text-decoration: underline;
 }

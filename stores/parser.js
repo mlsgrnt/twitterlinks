@@ -14,13 +14,8 @@ function store (state, emitter) {
             state.links.push(json)
 
             // rendering too often crashes choo so we have to be smart about it:
-            if (state.links.length % 20 === 0) {
+            if (state.links.length === state.tweets.length || state.links.length % 20 === 0) {
               emitter.emit(state.events.RENDER)
-            }
-            // load pocket buttons if done
-            if (state.links.length === state.tweets.length) {
-              emitter.emit(state.events.RENDER)
-              emitter.emit('pocket:loadButtons')
             }
           })
           .catch(err => {
