@@ -39,3 +39,9 @@ body::selection {
 .cursor-normal {
   cursor: default;
 }
+.backgroundText {
+  width: 100vw;
+  height: 100vh;
+  overflow-wrap: break-word;
+  overflow-y: hidden;
+}

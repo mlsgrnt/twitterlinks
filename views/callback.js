@@ -14,12 +14,12 @@ function view (state, emit) {
   return html`
     <body class="bg-near-white lh-copy">
       <main class="flex blue f1 pa3 cf center">
-     ${state.error ? html`
-     <div>
-      Bad news! There's been an ${state.error}<br>
-     <a href="/" class="blue hover-navy b link underline">Couldn't hurt to try again...</a>
-    </div>
-     ` : ''}
+      ${state.error ? html`
+        <div>
+          Bad news! There's been an ${state.error}<br>
+          <a href="/" class="blue hover-navy b link underline">Couldn't hurt to try again...</a>
+        </div>
+      ` : ''}
       </main>
     </body>
   `
