@@ -3,9 +3,11 @@ module.exports = store
 const fetch = require('node-fetch') // oh man this is so so so bad i'mso sorry but it's the only way to get the build to work
 
 function store (state, emitter) {
-  state.linksGrabbed = false
   state.links = []
   state.error = false
+
+  state.oauth = state.oauth ? state.oauth : {}
+  state.tweetsGrabbed = state.tweetsGrabbed ? state.tweetsGrabbed : false
 
   emitter.on('oauth:requestToken', () => {
     if (!state.oauth) {
@@ -16,12 +18,12 @@ function store (state, emitter) {
         res.json()
           .then((json) => {
             state.oauth = json.data
-            emitter.emit('oauth:redirectUser', state.oauth.oAuthToken)
+            emitter.emit(state.events.RENDER)// render triggers the localstorage write
+            setTimeout(() => {
+              window.location.replace(`https://api.twitter.com/oauth/authenticate?oauth_token=${state.oauth.oAuthToken}`)
+            }, 5)
           })
       })
-  })
-  emitter.on('oauth:redirectUser', (token) => {
-    window.location.replace(`https://api.twitter.com/oauth/authenticate?oauth_token=${token}`)
   })
   emitter.on('oauth:verifyToken', (token) => {
     const verified = token === state.oauth.oAuthToken
@@ -53,12 +55,12 @@ function store (state, emitter) {
   })
   emitter.on('oauth:deleteToken', () => {
     state.links = []
-    state.linksGrabbed = false
+    state.tweetsGrabbed = false
     state.oauth = {}
     state.error = false
     state.errorDetail = null
 
-    emitter.emit('render')
+    emitter.emit(state.events.RENDER)
   })
   emitter.on('oauth:getTweets', () => {
     fetch('https://smooth-octagon.glitch.me/?type=tweets', {
@@ -80,7 +82,10 @@ function store (state, emitter) {
               return
             }
             state.tweets = json.data
-            emitter.emit(state.events.RENDER)
+            state.tweetsGrabbed = Date.now()
+            json.data.forEach(tweet => {
+              emitter.emit('parser:parse', tweet)
+            })
           })
           .catch(err => {
             console.warn(err)

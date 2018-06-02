@@ -19,6 +19,7 @@ app.use(require('./stores/pocket'))
 
 app.route('/', require('./views/main'))
 app.route('/callback', require('./views/callback'))
+app.route('/login', require('./views/login'))
 app.route('/*', require('./views/404'))
 
 module.exports = app.mount('body')
