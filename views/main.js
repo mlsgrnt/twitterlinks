@@ -22,10 +22,12 @@ function view (state, emit) {
     <body class="">
     <div class="">
         <nav class="flex flex-wrap justify-between items-center ph1 ph4-ns">
-          <h2 class="w5-ns normal cursor-normal">${!state.viewingUser ? `@${state.oauth.user.screen_name}'s Timeline` : `Tweeted by @${state.viewingUser}`}</h2>
+          <span class="w5-ns normal cursor-normal">
+            <h2 class="dib pa0 ma0 " ><a class="link  ${state.viewingUser ? 'blue' : 'dark-blue'}" href="/" onclick=${viewMyself}>Timeline</a></h2>
+            <h2 class="dib pa0 pl2 ma0 "><a class="link  ${state.viewingUser ? 'dark-blue' : 'blue'} searchLink" href="/" onkeypress=${handleKeypress} onclick=${openSearch}>${state.viewingUser ? `@${state.viewingUser}` : 'User'}</a></h2>
+          </span>
           <h1 class="w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
           <a href="/" class="b w5-ns tr f3 link red hover-light-red" onclick=${handleClick}>Log out</a>
-          ${state.viewingUser ? html`<a href="/" class="pl2 b  tl f3 link black hover-blue" onclick=${viewMyself}>View Timeline</a> ` : ''}        
         </nav>
         <section class="">
           ${state.links.length === 0 ? html`<div class="pa5 f1-ns f3">Cute loading message and spinner go here</div>` : ''}
@@ -63,12 +65,40 @@ function view (state, emit) {
     </body>
   `
 
+  // log out button
   function handleClick () {
     emit('oauth:deleteToken')
   }
+
+  // timeline and user buttons
   function viewMyself () {
-    emit('oauth:viewMyself')
+    if (state.viewingUser) emit('oauth:viewMyself')
   }
+  function openSearch () {
+    const searchLink = document.querySelector('.searchLink')
+    searchLink.contentEditable = 'true'
+    searchLink.innerText = '@'
+
+    const range = document.createRange()
+    const sel = window.getSelection()
+    range.selectNodeContents(searchLink)
+    range.collapse(false)
+    sel.removeAllRanges()
+    sel.addRange(range)
+    searchLink.focus()
+    range.detach() // optimization
+  }
+  function handleKeypress (e) {
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      let username = e.target.innerText.split('@')
+      username = username.length > 1 ? username[1] : username[0]
+
+      emit('oauth:getUser', username)
+    }
+  }
+
+  // other links
   function mouseover (id) {
     emit('effects:linkHover', id)
   }
