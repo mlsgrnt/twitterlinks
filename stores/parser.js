@@ -17,6 +17,15 @@ function store (state, emitter) {
             json.tweetUrl = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
             json.duration = Math.ceil(json.duration / 60)
 
+            json.tweetBody = tweet.text
+            // strip urls from tweet body
+            tweet.entities.urls.forEach(function (url) {
+              json.tweetBody = json.tweetBody.replace(url.url, '')
+            })
+            tweet.entities.media ? tweet.entities.media.forEach(function (url) {
+              json.tweetBody = json.tweetBody.replace(url.url, '')
+            }) : null // not all tweets have media...
+
             // filter out some lousy results
             if (!json.description) return
             if (state.links.some(link => link.url === json.url)) return
