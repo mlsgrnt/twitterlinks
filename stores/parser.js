@@ -9,7 +9,7 @@ function store (state, emitter) {
     if (tweet.entities.urls.length === 0) return
 
     const url = tweet.entities.urls[0].expanded_url
-    fetch(`https://article-parser.now.sh/${url}`, {signal: fetchAbortSignal})
+    fetch(`https://article-parser.now.sh/${url}`)
       .then(res => {
         res.json()
           .then(json => {
