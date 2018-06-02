@@ -53,7 +53,7 @@ function store (state, emitter) {
           })
       })
   })
-  emitter.on('oauth:deleteToken', () => {
+  emitter.on('oauth:logOut', () => {
     state.links = []
     state.tweetsGrabbed = false
     state.oauth = {}
@@ -61,8 +61,9 @@ function store (state, emitter) {
     state.errorDetail = null
 
     // emitter.emit(state.events.RENDER)
-    emitter.emit(state.events.PUSHROUTE, '/login')
+    emitter.emit(state.events.PUSHSTATE, '/login')
   })
+
   emitter.on('oauth:getUser', (targetUserId) => {
     state.viewingUser = targetUserId
 

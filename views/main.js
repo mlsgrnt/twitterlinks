@@ -67,7 +67,7 @@ function view (state, emit) {
 
   // log out button
   function handleClick () {
-    emit('oauth:deleteToken')
+    emit('oauth:logOut')
   }
 
   // timeline and user buttons
