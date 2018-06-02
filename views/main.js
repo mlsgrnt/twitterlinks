@@ -22,8 +22,9 @@ function view (state, emit) {
     <body class="">
     <div class="">
         <nav class="flex flex-wrap justify-between items-center ph1 ph4-ns">
-          <h2 class="">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'Hello'}</h2>
-          <a href="/" class="f3 link red hover-light-red" onclick=${handleClick}>
+          <h2 class="w5 normal">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'Hello'}</h2>
+          <h1 class="w5 ma0 pa0 center tc f1 blue db-ns dn">Linkr</h1>
+          <a href="/" class="w5 tr f3 link red hover-light-red" onclick=${handleClick}>
           Log out
           </a>
         </nav>
