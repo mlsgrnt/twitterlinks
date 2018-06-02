@@ -22,9 +22,9 @@ function view (state, emit) {
     <body class="">
     <div class="">
         <nav class="flex flex-wrap justify-between items-center ph1 ph4-ns">
-          <h2 class="w5 normal">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'Hello'}</h2>
-          <h1 class="w5 ma0 pa0 center tc f1 blue db-ns dn">Linkr</h1>
-          <a href="/" class="w5 tr f3 link red hover-light-red" onclick=${handleClick}>
+          <h2 class="w5-ns normal cursor-normal">${state.oauth.user ? `Hello, ${state.oauth.user.name}` : 'Hello'}</h2>
+          <h1 class="w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
+          <a href="/" class="b w5-ns tr f3 link red hover-light-red" onclick=${handleClick}>
           Log out
           </a>
         </nav>
@@ -40,7 +40,7 @@ function view (state, emit) {
 
           <ul class="pa0 ma0">
           ${state.links.map(link => html`
-          <li class="article pa5-ns pa2 mv5-ns mv3" style="${link.image ? `background: rgba(${state.hovering === link.url ? '29,161,242' : '0,0,0'},${state.hovering === link.url ? '0.95' : '0.45'}) url(${link.image}) right center / cover no-repeat fixed;` : 'background: #1DA1F2'}">
+          <li class="article pa5-ns pa2 pv3 mv5-ns mv4" style="${link.image ? `background: rgba(${state.hovering === link.url ? '29,161,242' : '0,0,0'},${state.hovering === link.url ? '0.95' : '0.45'}) url(${link.image}) right center / cover no-repeat fixed;` : 'background: #1DA1F2'}">
               <div class="flex flex-column items-start justify-between h-100 mw7-ns w-100">
                 <div class="measure-wide w-100">
                   <h1 class="lh-solid measure b pt0 mt0 pb0 mb1"><a class="link white" href="${link.url}" onmouseleave=${() => { mouseover(link.url) }} onmouseover=${() => { mouseover(link.url) }}>${link.title}</a></h1>

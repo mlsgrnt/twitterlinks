@@ -10,40 +10,11 @@
 body {
   transition: background-color 0.3s ease-in;
 }
-
-.logout-link {
-  align-self: center;
-}
 .article-image {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-
-.card {
-  max-width: 65vw;
-  min-height: 400px;
-}
-
-/* MAJOR TODO TODO: TODO */
-@media all and (max-width: 736px) {
-  .card {
-    max-width: 100vw;
-    width: 100vw;
-  }
-}
-
-.flex-one-third {
-  flex: 2;
-}
-.flex-two-thirds {
-  flex: 3;
-}
-
-.space-around {
-  justify-content: space-between;
-}
-
 body::-moz-selection {
   background-color: #96ccff;
 }
@@ -64,4 +35,7 @@ body::selection {
 }
 .hover-underline:hover {
   text-decoration: underline;
+}
+.cursor-normal {
+  cursor: default;
 }

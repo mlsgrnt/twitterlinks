@@ -13,6 +13,11 @@ function store (state, emitter) {
             json.sharedBy = tweet.user
             json.tweetUrl = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
             json.duration = Math.ceil(json.duration / 60)
+
+            // filter out some lousy results
+            if (!json.description) return
+            if (state.links.some(link => link.url === json.url)) return
+
             state.links.push(json)
 
             // rendering too often crashes choo so we have to be smart about it:
