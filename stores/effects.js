@@ -10,7 +10,11 @@ function store (state, emitter) {
       emitter.emit(state.events.RENDER)
     })
     emitter.on('effects:tweetLinkHover', function (id) {
-      state.tweetHovering = state.tweetHovering ? false : id
+      state.tweetHovering = id
+      emitter.emit(state.events.RENDER)
+    })
+    emitter.on('effects:tweetLinkUnHover', function () {
+      state.tweetHovering = false
       emitter.emit(state.events.RENDER)
     })
 

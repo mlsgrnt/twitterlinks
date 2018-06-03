@@ -84,7 +84,7 @@ style="${link.image ? `background: rgba(${state.hovering === link.url ? '29,161,
                     <div class="tr lh-copy light-gray f4">
                       <h5 class="pb0 mb0 normal">${link.duration} minute read</h5>
                       <h5 class="pt0 mt0 normal"><a 
-onmouseleave=${() => { tweetmouseover(link.url) }} 
+onmouseleave=${() => { tweetmouseleave() }} 
 onmouseover=${() => { tweetmouseover(link.url) }} 
 class="link light-gray hover-light-blue" 
 href="${link.tweetUrl}
@@ -139,7 +139,11 @@ href="${link.tweetUrl}
     emit('effects:linkHover', id)
   }
   function tweetmouseover (id) {
-    emit('effects:tweetLinkHover', id)
+    state.tweetHoverTimeout = setTimeout(() => { emit('effects:tweetLinkHover', id) }, 500)
+  }
+  function tweetmouseleave () {
+    clearTimeout(state.tweetHoverTimeout)
+    emit('effects:tweetLinkUnHover')
   }
   function clearerror () {
     emit('clearerror')
