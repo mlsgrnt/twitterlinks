@@ -16,7 +16,7 @@ function view (state, emit) {
       <main class="flex blue f1 pa3 cf center">
       ${state.error ? html`
         <div>
-          Bad news! There's been an ${state.error}<br>
+          Bad news! There's been an error! ${state.error}<br>
           <a href="/" class="blue hover-navy b link underline">Couldn't hurt to try again...</a>
         </div>
       ` : ''}

@@ -29,7 +29,7 @@ function store (state, emitter) {
     const verified = token === state.oauth.oAuthToken
     if (verified) emitter.emit('oauth:accessToken')
     else {
-      state.error = 'oauthVerificationError'
+      state.error = 'Twitter login failed!'
       emitter.emit(state.events.RENDER)
     }
   })
@@ -58,7 +58,6 @@ function store (state, emitter) {
     state.tweetsGrabbed = false
     state.oauth = {}
     state.error = false
-    state.errorDetail = null
 
     // emitter.emit(state.events.RENDER)
     emitter.emit(state.events.PUSHSTATE, '/login')
@@ -67,6 +66,7 @@ function store (state, emitter) {
   emitter.on('oauth:getUser', (targetUserId) => {
     state.viewingUser = targetUserId
 
+    state.error = false
     state.links = []
     state.tweets = []
     state.loadedIndex = 0
@@ -86,8 +86,7 @@ function store (state, emitter) {
           .then((json) => {
             if (Object.keys(json.errors).length > 0) {
               console.warn(json.errors)
-              state.error = 'feedLoadingError'
-              state.errorDetail = JSON.parse(json.errors.data).errors
+              state.error = JSON.parse(json.errors.data).error || 'Feed loading error!'
               emitter.emit(state.events.RENDER)
               return
             }
@@ -103,6 +102,7 @@ function store (state, emitter) {
   })
 
   emitter.on('oauth:viewMyself', () => {
+    state.error = false
     state.viewingUser = false
     state.tweetsGrabbed = false
     state.tweets = []
@@ -124,8 +124,7 @@ function store (state, emitter) {
           .then((json) => {
             if (Object.keys(json.errors).length > 0) {
               console.warn(json.errors)
-              state.error = 'feedLoadingError'
-              state.errorDetail = JSON.parse(json.errors.data).errors
+              state.error = JSON.parse(json.errors.data).error || 'Feed loading error!'
               emitter.emit(state.events.RENDER)
               return
             }

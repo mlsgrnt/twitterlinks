@@ -10,7 +10,7 @@ function view (state, emit) {
   if (typeof window === 'undefined') return '<body></body>'
   if (!state.oauth.user) return html`<body><script>window.location='/login'</script></body>`
 
-  if (state.links.length === 0) {
+  if (state.links.length === 0 && !state.error) {
     if ((!state.tweets || (Date.now() - state.tweetsGrabbed > 900000))) { // 15 minutes
       emit('oauth:getTimeline')
     } else {
@@ -41,7 +41,7 @@ function view (state, emit) {
         <section class="">
           ${state.error ? html`
                  <div class="pa5 f1-ns f3">
-                  <a class="red link b" href="#" onclick=${clearerror}>Oh dear there's been a problem: ${state.error}.<br>Click to try again.</a>
+                  <a class="red link b" href="#" onclick=${clearerror}>Oh dear there's been a problem: ${state.error}<br>Click to try again.</a>
                  </div>
          `
     : ''}
