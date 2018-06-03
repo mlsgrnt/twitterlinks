@@ -41,10 +41,20 @@ function view (state, emit) {
 
           <ul class="pa0 ma0">
           ${state.links.map(link => html`
-          <li class="article pa5-ns pa2 pv3 mv5-ns mv4" style="${link.image ? `background: rgba(${state.hovering === link.url ? '29,161,242' : '0,0,0'},${state.hovering === link.url ? '1' : '0.45'}) url(${link.image}) right center / cover no-repeat fixed;` : 'background: #1DA1F2'}">
+          <li class="article pa5-ns pa2 pv3 mv5-ns mv4" style="${link.image ? `background: rgba(${state.hovering === link.url ? '29,161,242' : '0,0,0'},${state.hovering === link.url ? '1' : state.tweetHovering === link.url ? '0.7' : '0.45'}) url(${link.image}) right center / cover no-repeat fixed;` : 'background: #1DA1F2'}">
+              <div onmouseleave=${() => { tweetmouseover(link.url) }} onmouseover=${() => { tweetmouseover(link.url) }} class="fr-ns near-white measure-narrow lh-copy f3 dn db-ns relative-ns pa3 tweetBody cursor-normal"
+              style="transform:translateX(${state.tweetHovering === link.url ? '0);opacity:1' : '0);opacity:0'}"
+              >
+              ${link.tweetBody}
+              </div>
               <div class="flex flex-column items-start justify-between h-100 mw7-ns w-100">
                 <div class="measure-wide w-100">
-                  <h1 class="lh-solid measure b pt0 mt0 pb0 mb1"><a class="link white" href="${link.url}" onmouseleave=${() => { mouseover(link.url) }} onmouseover=${() => { mouseover(link.url) }}>${link.title}</a></h1>
+                  <h1 class="lh-solid measure b pt0 mt0 pb0 mb1"><a 
+                    class="link white" 
+                    href="${link.url}" 
+                    onmouseleave=${() => { mouseover(link.url) }} 
+                    onmouseover=${() => { mouseover(link.url) }}
+                  >${link.title}</a></h1>
                   <h2 class="normal light-gray pt0 mt0 ${state.hovering === link.url ? 'o-50' : ''}">${link.author ? `${link.author} | ` : ''}${link.source ? link.source : link.domain}</h2>
                   <div class="measure-narrow normal lh-copy light-gray f4 ${state.hovering === link.url ? 'o-50' : ''}">
                     <p>${link.description}</p>
@@ -54,7 +64,7 @@ function view (state, emit) {
                     <iframe width="60" height="63" id="pocket-button" frameborder="0" allowtransparency="true" scrolling="NO" src="https://widgets.getpocket.com/v1/button?align=center&count=vertical&label=pocket&url=${encodeURIComponent(link.url)}&src=example.com"></iframe>
                     <div class="tr lh-copy light-gray f4">
                       <h5 class="pb0 mb0 normal">${link.duration} minute read</h5>
-                      <h5 class="pt0 mt0 normal"><a class="link light-gray hover-light-blue " href="${link.tweetUrl}">Tweeted by ${link.sharedBy.name}</a></h5>
+                      <h5 class="pt0 mt0 normal"><a  class="link light-gray hover-light-blue" href="${link.tweetUrl}">Tweeted by ${link.sharedBy.name}</a></h5>
                     </div>
                 </div>
               </div>
@@ -103,6 +113,9 @@ function view (state, emit) {
   // other links
   function mouseover (id) {
     emit('effects:linkHover', id)
+  }
+  function tweetmouseover (id) {
+    emit('effects:tweetLinkHover', id)
   }
   function clearerror () {
     emit('clearerror')
