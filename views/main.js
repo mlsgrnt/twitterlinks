@@ -16,6 +16,8 @@ function view (state, emit) {
     } else {
       if (!(state.viewingUser && state.tweets.length === 0)) { // important condition: if we're loading timeline tweets, don't parse the old ones!
         emit('parser:parseMany', 20)
+      } else { // if state.tweets is empty but a user is present! (the page just laoded)
+        emit('oauth:getUser', state.viewingUser)
       }
     }
   }
