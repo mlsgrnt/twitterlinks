@@ -58,7 +58,7 @@ style="${link.image ? `background: rgba(${state.hovering === link.url ? '29,161,
     : 'background: #1DA1F2'
 }">
               <div 
-              class="near-white measure-narrow lh-copy f3 dn db-ns pa4 tweetBody cursor-normal"
+              class="near-black helvetica measure-narrow lh-copy f3 dn db-ns pa4 tweetBody cursor-normal br1"
               style="transform:translateX(${state.tweetHovering === link.url ? '0);opacity:1' : '0);opacity:0'}"
               >
               ${link.tweetBody}
