@@ -69,7 +69,7 @@ function store (state, emitter) {
 
     state.links = []
     state.tweets = []
-    state.renderedCount = 0
+    state.loadedIndex = 0
     emitter.emit(state.events.RENDER)
 
     fetch('https://smooth-octagon.glitch.me/?type=user', {
@@ -94,9 +94,7 @@ function store (state, emitter) {
             state.tweets = json.data
             state.tweetsGrabbed = Date.now()
 
-            json.data.forEach(tweet => {
-              emitter.emit('parser:parse', tweet)
-            })
+            emitter.emit('parser:parseMany')
           })
           .catch(err => {
             console.warn(err)
@@ -109,7 +107,7 @@ function store (state, emitter) {
     state.tweetsGrabbed = false
     state.tweets = []
     state.links = []
-    state.renderedCount = 0
+    state.loadedIndex = 0
     emitter.emit(state.events.RENDER)
   })
   emitter.on('oauth:getTimeline', () => {
@@ -133,9 +131,7 @@ function store (state, emitter) {
             }
             state.tweets = json.data
             state.tweetsGrabbed = Date.now()
-            json.data.forEach(tweet => {
-              emitter.emit('parser:parse', tweet)
-            })
+            emitter.emit('parser:parseMany')
           })
           .catch(err => {
             console.warn(err)

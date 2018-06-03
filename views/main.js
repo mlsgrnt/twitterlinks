@@ -11,10 +11,12 @@ function view (state, emit) {
   if (!state.oauth.user) return html`<body><script>window.location='/login'</script></body>`
 
   if (state.links.length === 0) {
-    if (!state.viewingUser && (!state.tweets || (Date.now() - state.tweetsGrabbed > 900000))) { // 15 minutes
+    if ((!state.tweets || (Date.now() - state.tweetsGrabbed > 900000))) { // 15 minutes
       emit('oauth:getTimeline')
     } else {
-      state.tweets.forEach(tweet => emit('parser:parse', tweet))
+      if (!(state.viewingUser && state.tweets.length === 0)) { // important condition: if we're loading timeline tweets, don't parse the old ones!
+        emit('parser:parseMany', 20)
+      }
     }
   }
 

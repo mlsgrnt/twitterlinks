@@ -3,7 +3,6 @@ module.exports = store
 function store (state, emitter) {
   emitter.on('DOMContentLoaded', function () {
     state.hovering = false
-    state.scrollRenderHappened = false // some weird behavior happens when you render on every scroll event
 
     emitter.on('effects:linkHover', function (id) {
       state.hovering = state.hovering ? false : id
@@ -16,9 +15,8 @@ function store (state, emitter) {
 
       const scrollPercentage = scrollDistance / pageHeight
 
-      if (scrollPercentage > 0.77 && state.scrollRenderHappened === false) { // lucky number
-        emitter.emit(state.events.RENDER)
-        state.renderLimit = 99999999 // just in case they haven't all finished loading
+      if (scrollPercentage > 0.77) { // lucky number
+        emitter.emit('parser:parseMany')
       }
     })
   })

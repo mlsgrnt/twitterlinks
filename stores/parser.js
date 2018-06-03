@@ -2,9 +2,20 @@
 module.exports = store
 
 function store (state, emitter) {
-  state.renderedCount = 0
-  state.renderLimit = 20
+  state.loadedIndex = 0
 
+  emitter.on('parser:parseMany', function (count) {
+    if (!count) count = 10
+    if (count + state.loadedIndex > state.tweets.length) {
+      count = state.tweets.length - state.loadedIndex
+    }
+
+    for (let i = 0; i < count; i++) {
+      emitter.emit('parser:parse', state.tweets[i + state.loadedIndex])
+    }
+
+    state.loadedIndex += count
+  })
   emitter.on('parser:parse', function (tweet) {
     if (tweet.entities.urls.length === 0) return
 
@@ -22,9 +33,11 @@ function store (state, emitter) {
             tweet.entities.urls.forEach(function (url) {
               json.tweetBody = json.tweetBody.replace(url.url, '')
             })
-            tweet.entities.media ? tweet.entities.media.forEach(function (url) {
-              json.tweetBody = json.tweetBody.replace(url.url, '')
-            }) : null // not all tweets have media...
+            if (tweet.entities.media) {
+              tweet.entities.media.forEach(function (url) {
+                json.tweetBody = json.tweetBody.replace(url.url, '')
+              })
+            }
 
             // filter out some lousy results
             if (!json.description) return
@@ -32,9 +45,7 @@ function store (state, emitter) {
 
             state.links.push(json)
 
-            if (state.renderedCount < state.renderLimit) emitter.emit(state.events.RENDER)
-
-            state.renderedCount++
+            emitter.emit(state.events.RENDER)
           })
           .catch(err => {
             console.log(err)
