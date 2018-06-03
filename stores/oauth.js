@@ -72,6 +72,8 @@ function store (state, emitter) {
     state.loadedIndex = 0
     emitter.emit(state.events.RENDER)
 
+    state.currentlyGrabbing = true
+
     fetch('https://smooth-octagon.glitch.me/?type=user', {
       method: 'POST',
       body: JSON.stringify({
@@ -93,6 +95,7 @@ function store (state, emitter) {
             }
             state.tweets = json.data
             state.tweetsGrabbed = Date.now()
+            state.currentlyGrabbing = false
 
             emitter.emit('parser:parseMany')
           })
@@ -112,6 +115,8 @@ function store (state, emitter) {
     emitter.emit(state.events.RENDER)
   })
   emitter.on('oauth:getTimeline', () => {
+    state.currentlyGrabbing = true
+
     fetch('https://smooth-octagon.glitch.me/?type=tweets', {
       method: 'POST',
       body: JSON.stringify({
@@ -131,6 +136,7 @@ function store (state, emitter) {
             }
             state.tweets = json.data
             state.tweetsGrabbed = Date.now()
+            state.currentlyGrabbing = false
             emitter.emit('parser:parseMany')
           })
           .catch(err => {

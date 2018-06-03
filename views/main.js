@@ -10,14 +10,14 @@ function view (state, emit) {
   if (typeof window === 'undefined') return '<body></body>'
   if (!state.oauth.user) return html`<body><script>window.location='/login'</script></body>`
 
-  if (state.links.length === 0 && !state.error) {
-    if ((!state.tweets || (Date.now() - state.tweetsGrabbed > 900000))) { // 15 minutes
+  if (state.links.length === 0 && !state.error && !state.currentlyGrabbing) {
+    if (!state.viewingUser && (!state.tweets || (Date.now() - state.tweetsGrabbed > 900000))) { // 15 minutes
       emit('oauth:getTimeline')
     } else {
-      if (!(state.viewingUser && state.tweets.length === 0)) { // important condition: if we're loading timeline tweets, don't parse the old ones!
-        emit('parser:parseMany', 20)
-      } else { // if state.tweets is empty but a user is present! (the page just laoded)
+      if (state.viewingUser) {
         emit('oauth:getUser', state.viewingUser)
+      } else {
+        emit('parser:parseMany')
       }
     }
   }
