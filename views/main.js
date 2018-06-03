@@ -41,8 +41,8 @@ function view (state, emit) {
 
           <ul class="pa0 ma0">
           ${state.links.map(link => html`
-          <li class="article pa5-ns pa2 pv3 mv5-ns mv4 flex flex-row-reverse items-start justify-between" style="align-items:stretch;${link.image ? `background: rgba(${state.hovering === link.url ? '29,161,242' : '0,0,0'},${state.hovering === link.url ? '1' : state.tweetHovering === link.url ? '0.7' : '0.45'}) url(${link.image}) right center / cover no-repeat fixed;` : 'background: #1DA1F2'}">
-              <div  class="near-white measure-narrow lh-copy f3 dn db-ns pa3 tweetBody cursor-normal"
+          <li class="article pa5-ns pa2 pv3 mv5-ns mv4 flex flex-row-reverse items-start justify-between" style="${link.image ? `background: rgba(${state.hovering === link.url ? '29,161,242' : '0,0,0'},${state.hovering === link.url ? '1' : '0.45'}) url(${link.image}) right center / cover no-repeat fixed;` : 'background: #1DA1F2'}">
+              <div  class="near-white measure-narrow lh-copy f3 dn db-ns pa4 tweetBody cursor-normal"
               style="transform:translateX(${state.tweetHovering === link.url ? '0);opacity:1' : '0);opacity:0'}"
               >
               ${link.tweetBody}

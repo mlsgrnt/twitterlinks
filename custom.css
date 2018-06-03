@@ -55,4 +55,5 @@ body::selection {
   transition: all 0.2s ease-in;
   will-animate: opacity;
   will-animate: transform;
+  background: rgba(0, 0, 0, 0.8)
 }
