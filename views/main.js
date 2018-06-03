@@ -26,7 +26,7 @@ function view (state, emit) {
     <body class="">
     <div class="">
         <nav class="flex flex-wrap justify-between items-center ph1 ph4-ns">
-          <span class="w6-ns normal cursor-normal">
+          <span class="flex-1 w6-ns normal cursor-normal">
             <h2 class="dib pa0 ma0 " ><a class="link  ${state.viewingUser ? 'blue' : 'dark-blue'}" href="/" onclick=${viewMyself}>Timeline</a></h2>
             <h2 class="dib pa0 pl2 ma0 "><a 
             class="link  ${state.viewingUser ? 'dark-blue' : 'blue'} searchLink" 
@@ -35,13 +35,13 @@ function view (state, emit) {
             onclick=${openSearch}
             >${state.viewingUser ? `@${state.viewingUser}` : 'User'}</a></h2>
           </span>
-          <h1 class="w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
-          <a href="/" class="b w5-ns tr f3 link red hover-light-red" onclick=${handleClick}>Log out</a>
+          <h1 class="flex-1 w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
+          <a href="/" class="flex-1 b w5-ns tr f3 link red hover-light-red" onclick=${handleClick}>Log out</a>
         </nav>
         <section class="">
           ${state.error ? html`
                  <div class="pa5 f1-ns f3">
-                  <a class="red link b" href="#" onclick=${clearerror}>Oh dear there's been a problem: ${state.error}<br>Click to try again.</a>
+                  <a class="red link b" href="/" onclick=${clearerror}>Oh dear there's been a problem: ${state.error}<br>Click to try again.</a>
                  </div>
          `
     : ''}

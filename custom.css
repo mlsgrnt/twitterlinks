@@ -55,5 +55,15 @@ body::selection {
   transition: all 0.2s ease-in;
   will-animate: opacity;
   will-animate: transform;
-  background: rgba(0, 0, 0, 0.8)
+  background: rgba(0, 0, 0, 0.8);
+}
+
+@media screen and (min-width: 30em) {
+  .w6-ns {
+    width: 24rem;
+  }
+}
+
+.flex-1 {
+  flex: 1
 }

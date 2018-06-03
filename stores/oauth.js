@@ -86,7 +86,8 @@ function store (state, emitter) {
           .then((json) => {
             if (Object.keys(json.errors).length > 0) {
               console.warn(json.errors)
-              state.error = JSON.parse(json.errors.data).error || 'Feed loading error!'
+              console.log(JSON.parse(json.errors.data))
+              state.error = JSON.parse(json.errors.data).error || JSON.parse(json.errors.data).errors[0].message || 'Feed loading error!'
               emitter.emit(state.events.RENDER)
               return
             }
@@ -124,7 +125,7 @@ function store (state, emitter) {
           .then((json) => {
             if (Object.keys(json.errors).length > 0) {
               console.warn(json.errors)
-              state.error = JSON.parse(json.errors.data).error || 'Feed loading error!'
+              state.error = JSON.parse(json.errors.data).error || JSON.parse(json.errors.data).errors[0].message || 'Feed loading error!'
               emitter.emit(state.events.RENDER)
               return
             }
