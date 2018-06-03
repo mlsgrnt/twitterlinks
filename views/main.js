@@ -26,7 +26,7 @@ function view (state, emit) {
     <body class="">
     <div class="">
         <nav class="flex flex-wrap justify-between items-center ph1 ph4-ns">
-          <span class="w5-ns normal cursor-normal">
+          <span class="w6-ns normal cursor-normal">
             <h2 class="dib pa0 ma0 " ><a class="link  ${state.viewingUser ? 'blue' : 'dark-blue'}" href="/" onclick=${viewMyself}>Timeline</a></h2>
             <h2 class="dib pa0 pl2 ma0 "><a 
             class="link  ${state.viewingUser ? 'dark-blue' : 'blue'} searchLink" 
