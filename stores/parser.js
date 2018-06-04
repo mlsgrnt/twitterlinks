@@ -41,6 +41,7 @@ function store (state, emitter) {
 
             // filter out some lousy results
             if (!json.description) return
+            if (!json.title) return
             if (state.links.some(link => link.url === json.url)) return
 
             state.links.push(json)

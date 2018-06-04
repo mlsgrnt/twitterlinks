@@ -25,7 +25,7 @@ function view (state, emit) {
   return html`
     <body class="">
     <div class="">
-        <nav class="flex flex-wrap justify-between items-center ph1 ph4-ns">
+        <nav class="flex-ns flex-wrap-ns justify-between items-center ph1 ph4-ns mt2 mt0-ns">
           <span class="flex-1 w6-ns normal cursor-normal">
             <h2 class="dib pa0 ma0 " ><a class="link  ${state.viewingUser ? 'blue' : 'dark-blue'}" href="/" onclick=${viewMyself}>Timeline</a></h2>
             <h2 class="dib pa0 pl2 ma0 "><a 
@@ -36,7 +36,7 @@ function view (state, emit) {
             >${state.viewingUser ? `@${state.viewingUser}` : 'User'}</a></h2>
           </span>
           <h1 class="flex-1 w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
-          <a href="/" class="flex-1 b w5-ns tr f3 link red hover-light-red" onclick=${handleClick}>Log out</a>
+          <a href="/" class="flex-1 b w5-ns tr f3 link red hover-light-red fr fn-ns" onclick=${handleClick}>Log out</a>
         </nav>
         <section class="">
           ${state.error ? html`
