@@ -7,7 +7,10 @@ function store (state, emitter) {
 
   emitter.on('tweets:reset', () => {
     state.error = false
+    state.typingSearch = false
+    state.typingUser = false
     state.viewingUser = false
+    state.searchTerm = false
     state.tweetsGrabbed = false
     state.tweets = []
     state.links = []
@@ -28,6 +31,30 @@ function store (state, emitter) {
     emitter.emit(state.events.RENDER)
   })
 
+  emitter.on('tweets:getSearch', (q) => {
+    emitter.emit('tweets:reset')
+    state.viewing = 'search'
+    state.searchTerm = q
+    state.currentlyGrabbing = true
+    emitter.emit(state.events.RENDER)
+
+    fetch('https://smooth-octagon.glitch.me/?type=search', {
+      method: 'POST',
+      body: JSON.stringify({
+        accessToken: state.oauth.accessToken,
+        accessTokenSecret: state.oauth.accessTokenSecret,
+        userId: state.oauth.user.id,
+        q: q
+      })
+    })
+      .then((response) => {
+        response.json()
+          .then(json => { emitter.emit('tweets:handleJSON', json) })
+          .catch(err => {
+            console.warn(err)
+          })
+      })
+  })
   emitter.on('tweets:getUser', (targetUserId) => {
     emitter.emit('tweets:reset')
     state.viewing = 'user'

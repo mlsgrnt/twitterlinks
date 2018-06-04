@@ -20,6 +20,9 @@ function view (state, emit) {
       if (state.viewing === 'user') {
         emit('tweets:getUser', state.viewingUser)
       }
+      if (state.viewing === 'search') {
+        emit('tweets:getSearch', state.searchTerm)
+      }
     }
     if (state.tweets.length > 0 && state.links.length === 0 && !state.currentlyGrabbing) {
       emit('parser:parseMany')
@@ -31,13 +34,19 @@ function view (state, emit) {
     <div class="">
         <nav class="flex-ns flex-wrap-ns justify-between items-center ph1 ph4-ns mt2 mt0-ns">
           <span class="flex-1 w6-ns normal cursor-normal">
-            <h2 class="dib pa0 ma0 " ><a class="link  ${state.viewingUser ? 'blue' : 'dark-blue'}" href="/" onclick=${viewMyself}>Timeline</a></h2>
+            <h2 class="dib pa0 ma0 " ><a class="link  ${state.viewing !== 'tl' ? 'blue' : 'dark-blue'}" href="/" onclick=${viewMyself}>Timeline</a></h2>
             <h2 class="dib pa0 pl2 ma0 "><a 
             class="link  ${state.viewingUser ? 'dark-blue' : 'blue'} searchLink" 
             href="/" 
             onkeypress=${handleKeypress}
             onclick=${openSearch}
             >${state.typingUser || state.viewingUser ? `@${state.typingUser || state.viewingUser}` : 'User'}</a></h2>
+            <h2 class="dib pa0 pl2 ma0 "><a 
+            class="link  ${state.searchTerm ? 'dark-blue' : 'blue'} searchLinkSearch" 
+            href="/" 
+            onkeypress=${handleKeypressSearch}
+            onclick=${openSearchSearch}
+            >${state.typingSearch || state.searchTerm ? `${state.typingSearch || state.searchTerm}` : 'Search'}</a></h2>
           </span>
           <h1 class="flex-1 w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
           <a href="/" class="flex-1 b w5-ns tr f3 link red hover-light-red fr fn-ns" onclick=${handleClick}>Log out</a>
@@ -112,7 +121,7 @@ href="${link.tweetUrl}
 
   // timeline and user buttons
   function viewMyself () {
-    if (state.viewingUser) emit('tweets:getTimeline')
+    if (state.viewing !== 'tl') emit('tweets:getTimeline')
   }
   function openSearch () {
     state.typingUser = state.typingUser ? state.typingUser : ''
@@ -141,6 +150,34 @@ href="${link.tweetUrl}
       emit('tweets:getUser', username)
     } else {
       state.typingUser += e.key
+    }
+  }
+  function openSearchSearch () {
+    state.typingSearch = state.typingSearch ? state.typingSearch : ' '
+
+    const searchLink = document.querySelector('.searchLinkSearch')
+    searchLink.contentEditable = 'true'
+    searchLink.innerText = state.typingSearch
+
+    const range = document.createRange()
+    const sel = window.getSelection()
+    range.selectNodeContents(searchLink)
+    range.collapse(false)
+    sel.removeAllRanges()
+    sel.addRange(range)
+    searchLink.focus()
+    range.detach() // optimization
+  }
+  function handleKeypressSearch (e) {
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      state.typingSearch = false
+
+      let query = e.target.innerText
+
+      emit('tweets:getSearch', query)
+    } else {
+      state.typingSearch += e.key
     }
   }
 
