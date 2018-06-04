@@ -1,6 +1,5 @@
 module.exports = store
 
-
 function store (state, emitter) {
   state.links = []
   state.error = false

@@ -1,6 +1,9 @@
 module.exports = store
 
 function store (state, emitter) {
+  state.typing = state.typing ? state.typing : ''
+  state.typingOpen = false
+
   emitter.on('DOMContentLoaded', function () {
     state.hovering = false
     state.tweetHovering = false
@@ -16,6 +19,29 @@ function store (state, emitter) {
     emitter.on('effects:tweetLinkUnHover', function () {
       state.tweetHovering = false
       emitter.emit(state.events.RENDER)
+    })
+
+    // search buttons that turn into inputs
+    emitter.on('effects:openSearch', function (id) {
+      if (state.typingOpen !== id) {
+        state.typing = ''
+        state.typingOpen = id
+        emitter.emit('render')
+      }
+
+      const searchLink = document.querySelector(`#${id}`)
+      searchLink.contentEditable = 'true'
+      searchLink.innerText = state.typing
+
+      // const range = document.createRange()
+      // const sel = window.getSelection()
+      // range.selectNodeContents(searchLink)
+      // range.collapse(false)
+      // sel.removeAllRanges()
+      // sel.addRange(range)
+      searchLink.focus()
+      // range.detach() // optimization
+      // console.log('i ran')
     })
 
     window.addEventListener('scroll', e => {

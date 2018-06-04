@@ -29,24 +29,29 @@ function view (state, emit) {
     }
   }
 
+  // open search boxes if they should be open
+  if (state.typingOpen) emit('effects:openSearch', state.typingOpen)
+
   return html`
     <body class="">
     <div class="">
         <nav class="flex-ns flex-wrap-ns justify-between items-center ph1 ph4-ns mt2 mt0-ns">
           <span class="flex-1 w6-ns normal cursor-normal">
-            <h2 class="dib pa0 ma0 " ><a class="link  ${state.viewing !== 'tl' ? 'blue' : 'dark-blue'}" href="/" onclick=${viewMyself}>Timeline</a></h2>
-            <h2 class="dib pa0 pl2 ma0 "><a 
-            class="link  ${state.viewingUser ? 'dark-blue' : 'blue'} searchLink" 
+            <h2 class="dib pa0 ma0 " ><a class="link pointer  ${state.viewing !== 'tl' ? 'blue' : 'dark-blue'}" href="/" onclick=${viewMyself}>Timeline</a></h2>
+            <h2 class="dib pa0 pl2 ma0 ${state.viewingUser ? 'dark-blue' : 'blue'}">@<a 
+            class="link ${state.viewingUser ? 'dark-blue' : 'blue'} searchLink" 
             href="/" 
+            id="User"
             onkeypress=${handleKeypress}
-            onclick=${openSearch}
-            >${state.typingUser || state.viewingUser ? `@${state.typingUser || state.viewingUser}` : 'User'}</a></h2>
+            onclick=${() => emit('effects:openSearch', 'User')}
+            >${state.typingOpen === 'User' || state.viewingUser ? `${state.typing || state.viewingUser}` : 'User'}</a></h2>
             <h2 class="dib pa0 pl2 ma0 "><a 
-            class="link  ${state.searchTerm ? 'dark-blue' : 'blue'} searchLinkSearch" 
+            class="db link pointer ${state.searchTerm ? 'dark-blue' : 'blue'} searchLinkSearch" 
             href="/" 
-            onkeypress=${handleKeypressSearch}
-            onclick=${openSearchSearch}
-            >${state.typingSearch || state.searchTerm ? `${state.typingSearch || state.searchTerm}` : 'Search'}</a></h2>
+            id="Search"
+            onkeypress=${handleKeypress}
+            onclick=${() => emit('effects:openSearch', 'Search')}
+            >${state.typingOpen === 'Search' ? `${state.typing}` : state.searchTerm ? state.searchTerm : 'Search'}</a></h2>
           </span>
           <h1 class="flex-1 w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
           <a href="/" class="flex-1 b w5-ns tr f3 link red hover-light-red fr fn-ns" onclick=${handleClick}>Log out</a>
@@ -123,61 +128,16 @@ href="${link.tweetUrl}
   function viewMyself () {
     if (state.viewing !== 'tl') emit('tweets:getTimeline')
   }
-  function openSearch () {
-    state.typingUser = state.typingUser ? state.typingUser : ''
-
-    const searchLink = document.querySelector('.searchLink')
-    searchLink.contentEditable = 'true'
-    searchLink.innerText = `@${state.typingUser}`
-
-    const range = document.createRange()
-    const sel = window.getSelection()
-    range.selectNodeContents(searchLink)
-    range.collapse(false)
-    sel.removeAllRanges()
-    sel.addRange(range)
-    searchLink.focus()
-    range.detach() // optimization
-  }
   function handleKeypress (e) {
     if (e.keyCode === 13) {
       e.preventDefault()
-      state.typingUser = false
+      state.typing = false
 
-      let username = e.target.innerText.split('@')
-      username = username.length > 1 ? username[1] : username[0]
-
-      emit('tweets:getUser', username)
+      const typed = e.target.innerText
+      const id = e.target.id
+      emit(`tweets:get${id}`, typed)
     } else {
-      state.typingUser += e.key
-    }
-  }
-  function openSearchSearch () {
-    state.typingSearch = state.typingSearch ? state.typingSearch : ' '
-
-    const searchLink = document.querySelector('.searchLinkSearch')
-    searchLink.contentEditable = 'true'
-    searchLink.innerText = state.typingSearch
-
-    const range = document.createRange()
-    const sel = window.getSelection()
-    range.selectNodeContents(searchLink)
-    range.collapse(false)
-    sel.removeAllRanges()
-    sel.addRange(range)
-    searchLink.focus()
-    range.detach() // optimization
-  }
-  function handleKeypressSearch (e) {
-    if (e.keyCode === 13) {
-      e.preventDefault()
-      state.typingSearch = false
-
-      let query = e.target.innerText
-
-      emit('tweets:getSearch', query)
-    } else {
-      state.typingSearch += e.key
+      state.typing += e.key
     }
   }
 
