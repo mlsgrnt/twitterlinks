@@ -8,6 +8,10 @@
   transition: opacity 0.2s ease-out;
 }
 
+.link:focus {
+  outline: none;
+}
+
 body {
   transition: background-color 0.3s ease-in;
 }
