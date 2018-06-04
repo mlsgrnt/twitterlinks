@@ -33,7 +33,7 @@ function view (state, emit) {
             href="/" 
             onkeypress=${handleKeypress}
             onclick=${openSearch}
-            >${state.viewingUser ? `@${state.viewingUser}` : 'User'}</a></h2>
+            >${state.typingUser || state.viewingUser ? `@${state.typingUser || state.viewingUser}` : 'User'}</a></h2>
           </span>
           <h1 class="flex-1 w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
           <a href="/" class="flex-1 b w5-ns tr f3 link red hover-light-red fr fn-ns" onclick=${handleClick}>Log out</a>
@@ -111,9 +111,11 @@ href="${link.tweetUrl}
     if (state.viewingUser) emit('oauth:viewMyself')
   }
   function openSearch () {
+    state.typingUser = state.typingUser ? state.typingUser : ''
+
     const searchLink = document.querySelector('.searchLink')
     searchLink.contentEditable = 'true'
-    searchLink.innerText = '@'
+    searchLink.innerText = `@${state.typingUser}`
 
     const range = document.createRange()
     const sel = window.getSelection()
@@ -127,10 +129,14 @@ href="${link.tweetUrl}
   function handleKeypress (e) {
     if (e.keyCode === 13) {
       e.preventDefault()
+      state.typingUser = false
+
       let username = e.target.innerText.split('@')
       username = username.length > 1 ? username[1] : username[0]
 
       emit('oauth:getUser', username)
+    } else {
+      state.typingUser += e.key
     }
   }
 
