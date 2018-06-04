@@ -10,15 +10,19 @@ function view (state, emit) {
   if (typeof window === 'undefined') return '<body></body>'
   if (!state.oauth.user) return html`<body><script>window.location='/login'</script></body>`
 
-  if (state.links.length === 0 && !state.error && !state.currentlyGrabbing) {
-    if (!state.viewingUser && (!state.tweets || (Date.now() - state.tweetsGrabbed > 900000))) { // 15 minutes
-      emit('oauth:getTimeline')
-    } else {
-      if (state.viewingUser) {
-        emit('oauth:getUser', state.viewingUser)
-      } else {
-        emit('parser:parseMany')
+  if (!state.error) {
+    if (state.links.length === 0 && !state.tweets && !state.currentlyGrabbing) {
+      if (state.viewing === 'tl') {
+        if ((Date.now() - state.tweetsGrabbed > 900000)) { // 15 minutes
+          emit('tweets:getTimeline')
+        }
       }
+      if (state.viewing === 'user') {
+        emit('tweets:getUser', state.viewingUser)
+      }
+    }
+    if (state.tweets.length > 0 && state.links.length === 0 && !state.currentlyGrabbing) {
+      emit('parser:parseMany')
     }
   }
 
@@ -108,7 +112,7 @@ href="${link.tweetUrl}
 
   // timeline and user buttons
   function viewMyself () {
-    if (state.viewingUser) emit('oauth:viewMyself')
+    if (state.viewingUser) emit('tweets:getTimeline')
   }
   function openSearch () {
     state.typingUser = state.typingUser ? state.typingUser : ''
@@ -134,7 +138,7 @@ href="${link.tweetUrl}
       let username = e.target.innerText.split('@')
       username = username.length > 1 ? username[1] : username[0]
 
-      emit('oauth:getUser', username)
+      emit('tweets:getUser', username)
     } else {
       state.typingUser += e.key
     }

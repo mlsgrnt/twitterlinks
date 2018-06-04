@@ -15,6 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(persist())
 app.use(require('./stores/parser'))
 app.use(require('./stores/oauth'))
+app.use(require('./stores/tweets'))
 app.use(require('./stores/effects'))
 
 app.route('/', require('./views/main'))
