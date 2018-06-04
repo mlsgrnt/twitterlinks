@@ -112,6 +112,7 @@ function store (state, emitter) {
     state.tweets = []
     state.links = []
     state.loadedIndex = 0
+    state.currentlyGrabbing = false
     emitter.emit(state.events.RENDER)
   })
   emitter.on('oauth:getTimeline', () => {
