@@ -36,7 +36,7 @@ function view (state, emit) {
           <div class="flex-1 w6-ns normal cursor-normal mt2">
             <h2 class="dib pa0 ma0 " ><a class="link  ${state.viewing !== 'tl' ? 'blue' : 'dark-blue'}" href="/" onclick=${viewMyself}>Timeline</a></h2>
             <div class="flex ${state.viewingUser ? 'dark-blue' : 'blue'} bold f3 items-center justify-center">
-            @<input
+            ${state.typingId === 'User' || state.viewingUser ? '@' : ''}<input
             class="dib pa0  ma0 bold ${state.viewingUser ? 'dark-blue' : 'blue'} search"
             type="text"
             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
