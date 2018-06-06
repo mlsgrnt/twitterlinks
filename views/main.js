@@ -32,22 +32,33 @@ function view (state, emit) {
   return html`
     <body class="">
     <div class="">
-        <nav class="flex-ns flex-wrap-ns justify-between items-center ph1 ph4-ns mt2 mt0-ns">
-          <span class="flex-1 w6-ns normal cursor-normal">
+        <nav class="flex-ns flex-wrap-ns justify-around items-center ph1 ph4-ns mt2 mt0-ns">
+          <div class="flex-1 w6-ns normal cursor-normal mt2">
             <h2 class="dib pa0 ma0 " ><a class="link  ${state.viewing !== 'tl' ? 'blue' : 'dark-blue'}" href="/" onclick=${viewMyself}>Timeline</a></h2>
-            <h2 class="dib pa0 pl2 ma0 "><a 
-            class="link  ${state.viewingUser ? 'dark-blue' : 'blue'} searchLink" 
-            href="/" 
+            <div class="flex ${state.viewingUser ? 'dark-blue' : 'blue'} bold f3 items-center justify-center">
+            @<input
+            class="dib pa0  ma0 bold ${state.viewingUser ? 'dark-blue' : 'blue'} search"
+            type="text"
+            autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+            href="/"
             onkeypress=${handleKeypress}
-            onclick=${openSearch}
-            >${state.typingUser || state.viewingUser ? `@${state.typingUser || state.viewingUser}` : 'User'}</a></h2>
-            <h2 class="dib pa0 pl2 ma0 "><a 
-            class="link  ${state.searchTerm ? 'dark-blue' : 'blue'} searchLinkSearch" 
-            href="/" 
-            onkeypress=${handleKeypressSearch}
-            onclick=${openSearchSearch}
-            >${state.typingSearch || state.searchTerm ? `${state.typingSearch || state.searchTerm}` : 'Search'}</a></h2>
-          </span>
+            onfocus=${handleFocus}
+            placeholder="User"
+            id="User"
+            value=${state.viewingUser ? state.viewingUser : state.typingId === 'User' ? state.typing : ''}
+            /></div>
+            <input
+            type="text"
+            autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+            class="dib pa0 bold f3 ma0 ${state.searchTerm ? 'dark-blue' : 'blue'} search"
+            href="/"
+            onkeypress=${handleKeypress}
+            onfocus=${handleFocus}
+            placeholder="Search"
+            id="Search"
+            value=${state.searchTerm ? state.searchTerm : state.typingId === 'Search' ? state.typing : ''}
+            />
+          </div>
           <h1 class="flex-1 w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
           <a href="/" class="flex-1 b w5-ns tr f3 link red hover-light-red fr fn-ns" onclick=${handleClick}>Log out</a>
         </nav>
@@ -123,61 +134,24 @@ href="${link.tweetUrl}
   function viewMyself () {
     if (state.viewing !== 'tl') emit('tweets:getTimeline')
   }
-  function openSearch () {
-    state.typingUser = state.typingUser ? state.typingUser : ''
-
-    const searchLink = document.querySelector('.searchLink')
-    searchLink.contentEditable = 'true'
-    searchLink.innerText = `@${state.typingUser}`
-
-    const range = document.createRange()
-    const sel = window.getSelection()
-    range.selectNodeContents(searchLink)
-    range.collapse(false)
-    sel.removeAllRanges()
-    sel.addRange(range)
-    searchLink.focus()
-    range.detach() // optimization
+  function handleFocus (e) {
+    if (state.typingId !== e.target.id) {
+      state.typingId = e.target.id
+      state.typing = ''
+      emit(state.events.RENDER)
+    }
   }
   function handleKeypress (e) {
+    state.typingId = e.target.id
+
     if (e.keyCode === 13) {
       e.preventDefault()
       state.typingUser = false
 
-      let username = e.target.innerText.split('@')
-      username = username.length > 1 ? username[1] : username[0]
-
-      emit('tweets:getUser', username)
+      let text = e.target.value
+      emit(`tweets:get${state.typingId}`, text)
     } else {
-      state.typingUser += e.key
-    }
-  }
-  function openSearchSearch () {
-    state.typingSearch = state.typingSearch ? state.typingSearch : ' '
-
-    const searchLink = document.querySelector('.searchLinkSearch')
-    searchLink.contentEditable = 'true'
-    searchLink.innerText = state.typingSearch
-
-    const range = document.createRange()
-    const sel = window.getSelection()
-    range.selectNodeContents(searchLink)
-    range.collapse(false)
-    sel.removeAllRanges()
-    sel.addRange(range)
-    searchLink.focus()
-    range.detach() // optimization
-  }
-  function handleKeypressSearch (e) {
-    if (e.keyCode === 13) {
-      e.preventDefault()
-      state.typingSearch = false
-
-      let query = e.target.innerText
-
-      emit('tweets:getSearch', query)
-    } else {
-      state.typingSearch += e.key
+      state.typing += e.key
     }
   }
 

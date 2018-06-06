@@ -8,8 +8,25 @@
   transition: opacity 0.2s ease-out;
 }
 
-.link:focus {
+.link:focus,
+.search:focus {
   outline: none;
+}
+.search {
+  outline: none;
+  border: none;
+  width: 100%;
+
+  cursor: pointer;
+}
+.bold {
+  font-weight: bold
+}
+.search::placeholder {
+  color: #357edd;
+}
+.search:focus::placeholder {
+  opacity: 0.5;
 }
 
 body {

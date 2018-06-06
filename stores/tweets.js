@@ -7,8 +7,8 @@ function store (state, emitter) {
 
   emitter.on('tweets:reset', () => {
     state.error = false
-    state.typingSearch = false
-    state.typingUser = false
+    state.typing = null
+    state.typingId = null
     state.viewingUser = false
     state.searchTerm = false
     state.tweetsGrabbed = false
