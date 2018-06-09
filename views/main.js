@@ -11,17 +11,19 @@ function view (state, emit) {
   if (!state.oauth.user) return html`<body><script>window.location='/login'</script></body>`
 
   if (!state.error) {
-    if (state.links.length === 0 && !state.tweets && !state.currentlyGrabbing) {
+    if (state.links.length === 0 && !state.currentlyGrabbing) {
       if (state.viewing === 'tl') {
         if ((Date.now() - state.tweetsGrabbed > 900000)) { // 15 minutes
           emit('tweets:getTimeline')
         }
       }
-      if (state.viewing === 'user') {
-        emit('tweets:getUser', state.viewingUser)
-      }
-      if (state.viewing === 'search') {
-        emit('tweets:getSearch', state.searchTerm)
+      if (!state.tweets) {
+        if (state.viewing === 'user') {
+          emit('tweets:getUser', state.viewingUser)
+        }
+        if (state.viewing === 'search') {
+          emit('tweets:getSearch', state.searchTerm)
+        }
       }
     }
     if (state.tweets.length > 0 && state.links.length === 0 && !state.currentlyGrabbing) {
