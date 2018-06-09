@@ -10,6 +10,11 @@ function view (state, emit) {
   if (typeof window === 'undefined') return '<body></body>'
   if (!state.oauth.user) return html`<body><script>window.location='/login'</script></body>`
 
+  if (state.links.length === 0) {
+    emit('effects:addLoadingDot')
+    emit(state.events.RENDER)
+  }
+
   if (!state.error) {
     if (state.links.length === 0 && !state.currentlyGrabbing) {
       if (state.viewing === 'tl') {
@@ -73,7 +78,7 @@ function view (state, emit) {
     : ''}
 
           ${state.links.length === 0 ? html`
-              <div class="pa5 f1-ns f3">Cute loading message and spinner go here</div>`
+              <div class="pa5 f1-ns f3">Searching for links${state.loadingDots}</div>`
     : ''}
 
           <ul class="pa0 ma0">

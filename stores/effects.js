@@ -5,6 +5,12 @@ function store (state, emitter) {
     state.hovering = false
     state.tweetHovering = false
 
+    state.loadingDots = '.'
+
+    emitter.on('effects:addLoadingDot', () => {
+      state.loadingDots = state.loadingDots.length === 5 ? '.' : state.loadingDots += '.'
+    })
+
     emitter.on('effects:linkHover', function (id) {
       state.hovering = state.hovering ? false : id
       emitter.emit(state.events.RENDER)
