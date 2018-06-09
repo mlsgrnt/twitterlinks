@@ -4,7 +4,7 @@
   "scripts": {
     "build": "bankai build index.js",
     "create": "choo-scaffold",
-    "deploy": "npm run build && cd dist && surge -d linkr.surge.sh -p ./",
+    "deploy": "rm -r dist && npm run build && cd dist && surge -d linkr.surge.sh -p ./",
     "inspect": "bankai inspect index.js",
     "start": "bankai start index.js",
     "test": "standard && npm run test-deps",
