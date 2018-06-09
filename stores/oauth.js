@@ -1,7 +1,7 @@
 module.exports = store
 
-
 function store (state, emitter) {
+  state.loginLoading = false
   state.links = []
   state.error = false
 
@@ -9,6 +9,9 @@ function store (state, emitter) {
   state.tweetsGrabbed = state.tweetsGrabbed ? state.tweetsGrabbed : false
 
   emitter.on('oauth:requestToken', () => {
+    state.loginLoading = true
+    emitter.emit(state.events.RENDER)
+
     if (!state.oauth) {
       state.oauth = {}
     }
