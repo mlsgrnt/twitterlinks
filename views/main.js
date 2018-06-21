@@ -10,11 +10,6 @@ function view (state, emit) {
   if (typeof window === 'undefined') return '<body></body>'
   if (!state.oauth.user) return html`<body><script>window.location='/login'</script></body>`
 
-  if (state.links.length === 0) {
-    emit('effects:addLoadingDot')
-    emit(state.events.RENDER)
-  }
-
   if (!state.error) {
     if (state.links.length === 0 && !state.currentlyGrabbing) {
       if (state.viewing === 'tl') {
@@ -78,7 +73,7 @@ function view (state, emit) {
     : ''}
 
           ${state.links.length === 0 ? html`
-              <div class="pa5 f1-ns f3">Searching for links${state.loadingDots}</div>`
+              <div class="pa5 f1-ns f3">Searching for links...</div>`
     : ''}
 
           <ul class="pa0 ma0">
@@ -92,6 +87,7 @@ style="${link.image ? `background: rgba(${state.hovering === link.url ? '29,161,
               class="near-black helvetica measure-narrow lh-copy f3 dn db-ns pa4 tweetBody cursor-normal br1"
               style="transform:translateX(${state.tweetHovering === link.url ? '0);opacity:1' : '0);opacity:0'}"
               >
+              <h4 class="f4 pa0 ma0 mb2">Original Tweet</h4>
               ${link.tweetBody}
               </div>
               <div class="flex flex-column items-start justify-between h-100 mw7-ns w-100">
