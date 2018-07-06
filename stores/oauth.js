@@ -21,9 +21,13 @@ function store (state, emitter) {
           .then((json) => {
             state.oauth = json.data
             emitter.emit(state.events.RENDER)// render triggers the localstorage write
-            setTimeout(() => {
-              window.location.replace(`https://api.twitter.com/oauth/authenticate?oauth_token=${state.oauth.oAuthToken}`)
-            }, 5)
+            if (!state.oauth.oAuthToken) {
+              console.error('fatal: bad token')
+            } else {
+              setTimeout(() => {
+                window.location.replace(`https://api.twitter.com/oauth/authenticate?oauth_token=${state.oauth.oAuthToken}`)
+              }, 5)
+            }
           })
       })
   })
