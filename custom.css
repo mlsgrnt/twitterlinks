@@ -89,3 +89,20 @@ body::selection {
 .flex-1 {
   flex: 1;
 }
+
+/* animations */
+.loading {
+  animation: opacityShift ease-in-out 0.7s infinite;
+}
+
+@keyframes opacityShift {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}

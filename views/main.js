@@ -73,13 +73,13 @@ function view (state, emit) {
     : ''}
 
           ${state.links.length === 0 ? html`
-              <div class="pa5 f1-ns f3">Searching for links...</div>`
+              <div class="pa5 f1-ns f3 loading">Searching for links...</div>`
     : ''}
 
           <ul class="pa0 ma0">
           ${state.links.map(link => html`
           <li 
-class="article pa5-ns pa2 pv3 mv4 flex flex-row-reverse items-start justify-between" 
+class="article pa5-ns pa2 pv3 mv1 flex flex-row-reverse items-start justify-between" 
 style="${link.image ? `background: rgba(${state.hovering === link.url ? '29,161,242' : '0,0,0'},${state.hovering === link.url ? '1' : '0.45'}) url(${link.image}) right center / cover no-repeat fixed;`
     : 'background: #1DA1F2'
 }">
