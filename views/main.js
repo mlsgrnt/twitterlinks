@@ -64,7 +64,7 @@ function view (state, emit) {
           <h1 class="flex-1 w5-ns ma0 pa0 center tc f1 blue db-ns dn cursor-normal">Linkr</h1>
           <a href="/" class="flex-1 b w5-ns tr f3 link red hover-light-red fr fn-ns" onclick=${handleClick}>Log out</a>
         </nav>
-        <section class="">
+        <section class="pt4 pt0-ns">
           ${state.error ? html`
                  <div class="pa5 f1-ns f3">
                   <a class="red link b" href="/" onclick=${clearerror}>Oh dear there's been a problem: ${state.error}<br>Click to try again.</a>
@@ -84,7 +84,7 @@ style="${link.image ? `background: rgba(${state.hovering === link.url ? '29,161,
     : 'background: #1DA1F2'
 }">
               <div 
-              class="near-black helvetica measure-narrow lh-copy f3 dn db-ns pa4 tweetBody cursor-normal br1"
+              class="near-black helvetica measure-narrow lh-copy f3 dn db-l pa4 tweetBody cursor-normal br1"
               style="transform:translateX(${state.tweetHovering === link.url ? '0);opacity:1' : '0);opacity:0'}"
               >
               <h4 class="f4 pa0 ma0 mb2">Original Tweet</h4>
