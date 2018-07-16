@@ -10,7 +10,7 @@ function view (state, emit) {
 
   return html`
     <body class="bg-blue white vh-100 dt w-100" >
-            <div class="pa5-ns pa2">
+            <div class="pa4-ns pa2">
               <h1 class="f-headline  measure-narrow ma0 pa0">Linkr</h1>
               <p style="line-height:0.5" class="f1-ns f4 lh-copy measure  pa0 ma0 mb4 ">
                 <span>Twitter; just the links</span>
