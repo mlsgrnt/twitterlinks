@@ -20,7 +20,11 @@ function store (state, emitter) {
     if (tweet.entities.urls.length === 0) return
 
     const url = tweet.entities.urls[0].expanded_url
-    fetch(`https://article-parser.now.sh/${url}`)
+    let parserUrl = 'https://article-parser-server.glitch.me' // IF RUNNING ON ACTUAL SITE, CHOOSE GLITCH SERVER
+    if (window.location.origin === 'https://localhost:8080') {
+      parserUrl = 'https://article-parser.now.sh' // otherwise now server (less reliable but able to handle rapid requests)
+    }
+    fetch(`${parserUrl}/${url}`)
       .then(res => {
         res.json()
           .then(json => {
