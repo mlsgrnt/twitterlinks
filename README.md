@@ -1,5 +1,7 @@
 # twitterLinks
-see articles shared on your twitter!
+Your Twitter feed, but only the links shared.
+
+Built as a way to work with the then new and exciting choo.js framework. Quite proud of the CSS here, especially once logged in.
 
 ## Commands
 Command                | Description                                      |
