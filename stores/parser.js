@@ -21,9 +21,9 @@ function store (state, emitter) {
 
     const url = tweet.entities.urls[0].expanded_url
     let parserUrl = 'https://article-parser-server.glitch.me' // IF RUNNING ON ACTUAL SITE, CHOOSE GLITCH SERVER
-    if (window.location.origin === 'https://localhost:8080') {
-      parserUrl = 'https://article-parser.now.sh' // otherwise now server (less reliable but able to handle rapid requests)
-    }
+    // if (window.location.origin === 'https://localhost:8080') {
+    //  parserUrl = 'https://article-parser.now.sh' // otherwise now server (less reliable but able to handle rapid requests)
+    // }
     fetch(`${parserUrl}/${url}`)
       .then(res => {
         res.json()
